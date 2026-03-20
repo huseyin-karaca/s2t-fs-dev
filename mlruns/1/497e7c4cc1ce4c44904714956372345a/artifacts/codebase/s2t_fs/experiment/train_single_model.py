@@ -1,9 +1,14 @@
 import mlflow
 import numpy as np
+import os
+import sys
+import subprocess
+import pandas as pd
 from optuna.integration import OptunaSearchCV
 from sklearn.model_selection import ShuffleSplit
 
-from s2t_fs.utils.mlflow_utils import log_experiment_metadata, log_experiment_results
+from s2t_fs.utils.dict_utils import flatten_dict
+
 from s2t_fs.utils.logger import custom_logger as logger
 from s2t_fs.models.registry import prepare_model_from_config
 from s2t_fs.data.loader import load_and_prepare_data
@@ -76,22 +81,53 @@ def hpt_single_model(cfg, config_path=None):
 
         # ---- Robust MLflow Logging ----
 
-        # Log Metadata (Config, artifacts, scripts, codebase, git, etc.)
-        log_experiment_metadata(cfg, config_path)
+        # 1. Log Config as Flattened Parameters
+        mlflow.log_params(flatten_dict(cfg))
         
+        # 2. Log Config JSON as Artifact
+        if config_path and os.path.exists(config_path):
+            mlflow.log_artifact(config_path, artifact_path="config")
+
+        # 3. Log Script & Codebase Artifacts
+        main_script = sys.argv[0]
+        if os.path.exists(main_script):
+            mlflow.log_artifact(main_script, artifact_path="codebase/scripts")
+
+        s2t_fs_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 's2t_fs'))
+        if os.path.exists(s2t_fs_dir):
+            mlflow.log_artifacts(s2t_fs_dir, artifact_path="codebase/s2t_fs")
+
+        # 4. Log Git Commit
+        try:
+            commit_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD'], stderr=subprocess.DEVNULL).decode('ascii').strip()
+            if commit_hash:
+                mlflow.set_tag("mlflow.source.git.commit", commit_hash)
+        except Exception:
+            pass
+
         # -------------------------------
         
         search.fit(X_train, Y_train)
 
-        preds = search.best_estimator_.predict(X_test)
-        wer_best_model = float(Y_test[np.arange(len(Y_test)), preds].mean())
+        # 5. Log CV Results as CSV artifact
+        try:
+            cv_results_df = pd.DataFrame(search.cv_results_)
+            cv_csv_path = "temp_cv_results.csv"
+            cv_results_df.to_csv(cv_csv_path, index=True)
+            mlflow.log_artifact(cv_csv_path, artifact_path="results")
+            os.remove(cv_csv_path)
+        except Exception as e:
+            logger.warning(f"Could not save cv_results_: {e}")
 
-        # Log CV Results, JSON metadata, and test metrics
-        log_experiment_results(search, wer_best_model, dataset_stats)
+        preds = search.best_estimator_.predict(X_test)
+
+
+        wer_best_model = float(Y_test[np.arange(len(Y_test)), preds].mean())
 
         logger.bind(category="HPT-Detail").success(
             f"Hyperparameter tuning of {model_name} has been completed. Best Test WER: {wer_best_model:.4f}"
         )
+        mlflow.log_metrics({"test_wer": wer_best_model})
 
     return wer_best_model
 
