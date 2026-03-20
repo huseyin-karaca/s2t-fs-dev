@@ -1,0 +1,25 @@
+name: s2t-fs
+channels:
+  - conda-forge
+  - pytorch  # PyTorch'un en optimize versiyonu için eklendi
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - ruff
+  - ipykernel
+  - numpy>=1.26
+  - pandas>=2.1
+  - pyarrow>=14
+  - scikit-learn>=1.4
+  - xgboost>=2.0
+  - pip:
+    - torch>=2.0
+    - optuna>=4.3
+    - optuna-integration>=4.3
+    - mlflow>=2.10
+    - python-dotenv
+    - mkdocs
+    - gdown
+    - loguru
+    - -e .
