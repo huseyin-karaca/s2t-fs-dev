@@ -1,0 +1,13 @@
+{
+  "test_wer": 0.48024654388427734,
+  "dataset_stats": {
+    "source": "synthetic",
+    "num_features": 200,
+    "num_informative": 15,
+    "num_noise": 185,
+    "num_experts": 3,
+    "num_total_rows": 800,
+    "train_size": 640,
+    "test_size": 160
+  }
+}

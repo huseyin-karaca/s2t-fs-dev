@@ -1,0 +1,52 @@
+{
+    "mlflow_params": {
+        "tracking_uri": "sqlite:///mlruns_nested_try.db",
+        "experiment_name": "Multi Model Benchmark"
+    },
+    "data_params": {
+        "dataset": "voxpopuli",
+        "row_subsample": 1,
+        "feature_subsample": 1,
+        "standard_normalize": true,
+        "seed": 42,
+        "test_size": 0.1
+    },
+    "search_params": {
+        "seed": 42,
+        "num_samples": 2,
+        "num_folds": 1,
+        "test_size": 0.1,
+        "refit": true
+    },
+    "evaluation_params": {
+        "target_model_name": "AdaSTT_XGBoost"
+    },
+    "models": {
+        "AdaSTT_XGBoost": {
+            "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
+            "init_args": {},
+            "hyperparameters": {
+                "n_estimators": [5, 10],
+                "learning_rate": [0.05, 0.1],
+                "max_depth": [3, 5],
+                "subsample": [0.8, 1.0],
+                "colsample_bytree": [0.8, 1.0],
+                "min_child_weight": [1, 3],
+                "reg_lambda": [0.1, 1.0]
+            }
+        },
+        "Baseline_XGBoost": {
+            "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
+            "init_args": {},
+            "hyperparameters": {
+                "n_estimators": [3, 7],
+                "learning_rate": [0.01, 0.2],
+                "max_depth": [2, 4],
+                "subsample": [0.6, 0.9],
+                "colsample_bytree": [0.5, 0.9],
+                "min_child_weight": [2, 5],
+                "reg_lambda": [0.01, 0.5]
+            }
+        }
+    }
+}

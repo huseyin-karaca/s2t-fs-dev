@@ -1,0 +1,18 @@
+{
+  "target_model": "FASTT-XGB_diagonal",
+  "our_wer": 0.4278256297111511,
+  "best_competitor": "FASTT-SDT_identity",
+  "best_competitor_wer": 0.42788615822792053,
+  "wer_margin": 6.052851676940918e-05,
+  "oracle_wer": 0.3856127858161926,
+  "all_results": {
+    "Always_Expert_0": 0.5011800527572632,
+    "Always_Expert_1": 0.48024654388427734,
+    "Always_Expert_2": 0.5033420324325562,
+    "Raw_XGBoost": 0.4281959533691406,
+    "FASTT-SDT_identity": 0.42788615822792053,
+    "FASTT-SDT_diagonal": 0.42788615822792053,
+    "FASTT-XGB_identity": 0.4281959533691406,
+    "FASTT-XGB_diagonal": 0.4278256297111511
+  }
+}

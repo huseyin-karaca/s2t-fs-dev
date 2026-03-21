@@ -1,0 +1,11 @@
+{
+  "target_model": "AdaSTT_XGBoost",
+  "our_wer": 0.19426624476909637,
+  "best_competitor": "Baseline_XGBoost",
+  "best_competitor_wer": 0.19525587558746338,
+  "wer_margin": 0.0009896308183670044,
+  "all_results": {
+    "AdaSTT_XGBoost": 0.19426624476909637,
+    "Baseline_XGBoost": 0.19525587558746338
+  }
+}

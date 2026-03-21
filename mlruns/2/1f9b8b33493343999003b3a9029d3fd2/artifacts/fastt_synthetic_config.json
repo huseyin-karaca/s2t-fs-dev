@@ -1,0 +1,113 @@
+{
+    "mlflow_params": {
+        "tracking_uri": "sqlite:///s2t_experiments.db",
+        "experiment_name": "FASTT Synthetic Validation"
+    },
+    "data_params": {
+        "source": "synthetic",
+        "n_samples": 800,
+        "n_informative": 15,
+        "n_noise": 185,
+        "n_experts": 3,
+        "test_size": 0.2,
+        "seed": 42
+    },
+    "evaluation_params": {
+        "target_model_name": "FASTT-XGB_diagonal"
+    },
+    "models": {
+        "Always_Expert_0": {
+            "class_path": "s2t_fs.models.dummy_model.DummyModel",
+            "init_args": {
+                "target_index": 0
+            }
+        },
+        "Always_Expert_1": {
+            "class_path": "s2t_fs.models.dummy_model.DummyModel",
+            "init_args": {
+                "target_index": 1
+            }
+        },
+        "Always_Expert_2": {
+            "class_path": "s2t_fs.models.dummy_model.DummyModel",
+            "init_args": {
+                "target_index": 2
+            }
+        },
+        "Raw_XGBoost": {
+            "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
+            "init_args": {
+                "n_estimators": 50,
+                "learning_rate": 0.1,
+                "max_depth": 4,
+                "early_stopping_rounds": 10
+            }
+        },
+        "FASTT-SDT_identity": {
+            "class_path": "s2t_fs.models.fastt.FASTTBoosted",
+            "init_args": {
+                "num_rounds": 3,
+                "transform_type": "identity",
+                "num_trees": 20,
+                "depth": 4,
+                "lmbda": 0.1,
+                "lr": 5e-4,
+                "weight_decay": 1e-4,
+                "epochs": 60,
+                "patience": 15
+            }
+        },
+        "FASTT-SDT_diagonal": {
+            "class_path": "s2t_fs.models.fastt.FASTTBoosted",
+            "init_args": {
+                "num_rounds": 3,
+                "transform_type": "diagonal",
+                "transform_kwargs": {"lambda1": 0.05, "lambda2": 0.01},
+                "num_trees": 20,
+                "depth": 4,
+                "lmbda": 0.1,
+                "lr": 5e-4,
+                "weight_decay": 1e-4,
+                "epochs": 60,
+                "patience": 15
+            }
+        },
+        "FASTT-XGB_identity": {
+            "class_path": "s2t_fs.models.fastt.FASTTAlternating",
+            "init_args": {
+                "base_selector": {
+                    "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
+                    "init_args": {
+                        "n_estimators": 50,
+                        "learning_rate": 0.1,
+                        "max_depth": 4,
+                        "early_stopping_rounds": 10
+                    }
+                },
+                "transform_type": "identity",
+                "num_iterations": 5,
+                "transform_lr": 5e-3,
+                "transform_steps": 100
+            }
+        },
+        "FASTT-XGB_diagonal": {
+            "class_path": "s2t_fs.models.fastt.FASTTAlternating",
+            "init_args": {
+                "base_selector": {
+                    "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
+                    "init_args": {
+                        "n_estimators": 50,
+                        "learning_rate": 0.1,
+                        "max_depth": 4,
+                        "early_stopping_rounds": 10
+                    }
+                },
+                "transform_type": "diagonal",
+                "transform_kwargs": {"lambda1": 0.05, "lambda2": 0.01},
+                "num_iterations": 5,
+                "transform_lr": 5e-3,
+                "transform_steps": 100
+            }
+        }
+    }
+}
