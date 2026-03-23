@@ -1,0 +1,15 @@
+name: s2t-fs
+
+conda_env: environment.yml
+
+entry_points:
+  synthetic_experiment:
+    parameters:
+      script_name:
+        type: string
+        default: test-diagonal-transform
+      config:
+        type: string
+        default: configs/synt-exp_fastt-alternating-diagonal.json
+    command: "python -m s2t_fs.experiment.synthetic.{script_name} --config {config}"
+
