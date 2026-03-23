@@ -23,6 +23,7 @@ theme:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Experimental Design: experiments.md
   - Transforms Rationale: synthetic_transforms_rationale.md
 
 plugins:

@@ -23,4 +23,5 @@ dependencies:
     - mkdocs-material
     - gdown
     - loguru
+    - lightgbm>=4.0
     - -e .
