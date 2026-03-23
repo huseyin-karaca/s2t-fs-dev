@@ -7,7 +7,7 @@ entry_points:
     parameters:
       script_name:
         type: string
-        default: test-diagonal-transform
+        default: test_transform
       config:
         type: string
         default: configs/synt-exp_fastt-alternating-diagonal.json

@@ -81,10 +81,15 @@ If you want to use `mlflow run`, you must tell the `mlflow` CLI where the databa
 To make it work, run this in your terminal:
 ```bash
 export MLFLOW_TRACKING_URI=sqlite:///s2t-fs-experiments.db
-mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test-diagonal-transform -P config=configs/synt-exp_fastt-alternating-diagonal.json
+mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_transform -P config=configs/synt-exp_fastt-alternating-diagonal.json
+
+# You can also use other non-diagonal transformations!
+mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_transform -P config=configs/synt-exp_fastt-alternating-linear.json
+mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_transform -P config=configs/synt-exp_fastt-boosted-lowrank.json
+mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_transform -P config=configs/synt-exp_fastt-alternating-nonlinear.json
 ```
 
 If you ever want the `tracking_uri` in the JSON to take charge without exporting environment variables, simply run the module directly without `mlflow run`:
 ```bash
-python -m s2t_fs.experiment.synthetic.test-diagonal-transform --config configs/synt-exp_fastt-alternating-diagonal.json
-``` 
+python -m s2t_fs.experiment.synthetic.test_transform --config configs/synt-exp_fastt-alternating-diagonal.json
+```  

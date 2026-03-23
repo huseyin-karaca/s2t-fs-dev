@@ -73,6 +73,22 @@ create_environment:
 # Self Documenting Commands                                                     #
 #################################################################################
 
+## Serve documentation locally
+.PHONY: docs-serve
+docs-serve:
+	mkdocs serve
+
+## Build documentation
+.PHONY: docs-build
+docs-build:
+	mkdocs build
+
+## Deploy documentation to gh-pages locally
+.PHONY: docs-deploy
+docs-deploy:
+	mkdocs gh-deploy --force
+
+
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT

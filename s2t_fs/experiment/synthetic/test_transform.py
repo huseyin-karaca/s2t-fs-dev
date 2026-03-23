@@ -75,33 +75,35 @@ with mlflow.start_run(run_name=cfg["mlflow_cfg"]["run_name"]) as run:
     log_experiment_metadata(cfg)
     log_experiment_results(search, wer_best, stats)
     
-    # Extract the gating weights from the best fitted model
+    # Extract the feature importances from the best fitted model
     best_model = search.best_estimator_
-    gating_weights_tuned = best_model.get_gating_weights()
+    
+    # Use the new generic method instead of the diagonal-only gating weights
+    feature_importances = best_model.get_feature_importances()
     
     # 6. Plotting and Artifact Logging
     fig, ax = plt.subplots(figsize=(12, 6))
     
-    if isinstance(gating_weights_tuned, list):
+    if isinstance(feature_importances, list):
         # Model produced a list of weights (e.g. FASTTBoosted per-round weights)
-        for i, gw in enumerate(gating_weights_tuned):
-            ax.plot(np.abs(gw), marker='o', alpha=0.9, label=f'Round {i+1} Diagonal Weights')
-    else:
+        for i, gw in enumerate(feature_importances):
+            ax.plot(gw, marker='o', alpha=0.9, label=f'Round {i+1} Feature Importances')
+    elif feature_importances is not None:
         # Single gating weight vector
-        ax.plot(np.abs(gating_weights_tuned), marker='o', alpha=0.9, color='green', label='Tuned Diagonal Weights')
+        ax.plot(feature_importances, marker='o', alpha=0.9, color='green', label='Tuned Feature Importances')
     
     ax.axvline(x=4.5, color='red', linestyle='--', linewidth=2, label='Informative / Noise Boundary')
-    ax.set_title(f'Learned {cfg["model_cfg"]["model_name"]} Gating Weights', fontsize=14)
+    ax.set_title(f'Learned {cfg["model_cfg"]["model_name"]} Feature Importances', fontsize=14)
     ax.set_xlabel('Feature Index', fontsize=12)
-    ax.set_ylabel('Weight Magnitude $|q_j|$', fontsize=12)
+    ax.set_ylabel('Importance Magnitude (L2 Norm)', fontsize=12)
     ax.set_xticks(range(30))
     ax.legend(fontsize=10)
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     
     # Log the figure natively to MLflow as an artifact
-    mlflow.log_figure(fig, "gating_weights_tuned.png")
-    logger.info("Saved gating weights plot to MLflow artifacts.")
+    mlflow.log_figure(fig, "feature_importances.png")
+    logger.info("Saved feature importances plot to MLflow artifacts.")
     
     # Close the figure to prevent hanging during automated MLflow runs
     plt.close(fig)

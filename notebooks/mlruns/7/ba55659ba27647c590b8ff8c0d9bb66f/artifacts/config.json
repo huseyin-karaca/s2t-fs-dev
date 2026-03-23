@@ -1,0 +1,50 @@
+{
+  "mlflow_cfg": {
+    "tracking_uri": "sqlite:///s2t-fs-experiments.db",
+    "experiment_name": "Check",
+    "run_name": "FASTT-Boosted-LowRank"
+  },
+  "data_cfg": {
+    "n_samples": 5000,
+    "n_informative": 5,
+    "n_noise": 45,
+    "n_experts": 4,
+    "test_size": 0.2,
+    "seed": 42
+  },
+  "search_cfg": {
+    "seed": 42,
+    "num_samples": 2,
+    "num_folds": 1,
+    "test_size": 0.1,
+    "refit": true
+  },
+  "model_cfg": {
+    "model_name": "FASTTBoosted",
+    "class_path": "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
+    "init_args": {
+      "transform_type": "low_rank",
+      "num_rounds": 2,
+      "num_trees": 10,
+      "epochs": 10,
+      "random_state": 42,
+      "transform_kwargs": {
+        "bottleneck_dim": 8
+      }
+    },
+    "hyperparameters": {
+      "lr": [
+        0.001,
+        0.01
+      ],
+      "lmbda": [
+        0.1,
+        0.01
+      ],
+      "depth": [
+        3,
+        4
+      ]
+    }
+  }
+}
