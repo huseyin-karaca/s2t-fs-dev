@@ -102,6 +102,41 @@ docs-deploy:
 
 
 #################################################################################
+# VAST.AI COMMANDS                                                              #
+#################################################################################
+
+# Override any of these from the CLI: make vast-launch GPU=A100_SXM4 MAX_PRICE=0.80
+GPU       ?= RTX_3090
+MAX_PRICE ?= 0.30
+DISK      ?= 30
+INSTANCE  ?=
+
+## Launch a vast.ai GPU instance with the pre-built Docker image (SSH-ready)
+.PHONY: vast-launch
+vast-launch:
+	bash scripts/vast_launch.sh --gpu $(GPU) --max-price $(MAX_PRICE) --disk $(DISK)
+
+## Print the best matching vast.ai offer without creating an instance
+.PHONY: vast-dry-run
+vast-dry-run:
+	bash scripts/vast_launch.sh --gpu $(GPU) --max-price $(MAX_PRICE) --dry-run
+
+## List your active vast.ai instances
+.PHONY: vast-list
+vast-list:
+	vastai show instances
+
+## Destroy a specific instance (INSTANCE=<id>) or all instances
+.PHONY: vast-stop
+vast-stop:
+	@if [ -n "$(INSTANCE)" ]; then \
+		vastai destroy instance $(INSTANCE); \
+	else \
+		vastai show instances --raw | jq -r '.[].id' | xargs -I{} vastai destroy instance {}; \
+	fi
+
+
+#################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
 
