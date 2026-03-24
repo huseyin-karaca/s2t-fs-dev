@@ -13,13 +13,15 @@ Mode auto-detection:
 
 import argparse
 import json
+import os
+
+import mlflow
 
 from s2t_fs.experiment.train_margin_optimization import margin_optimization_experiment
 from s2t_fs.experiment.train_multi_model import multi_model_experiment
 from s2t_fs.experiment.train_single_model import hpt_single_model
-
-import mlflow
-import os
+from s2t_fs.utils.logger import custom_logger as logger
+from s2t_fs.utils.torch_utils import log_hardware_info
 
 
 def _has_list_values(params_dict):
@@ -69,6 +71,8 @@ def main():
         cfg = json.load(f)
 
     mode = args.mode or _detect_mode(cfg)
+
+    log_hardware_info(logger)
 
     # --- Common MLflow setup ---
     mlflow_params = cfg["mlflow_params"]

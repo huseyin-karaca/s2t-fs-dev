@@ -1,7 +1,8 @@
+import os
+
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.model_selection import train_test_split
-import torch
 import xgboost as xgb
 
 
@@ -41,6 +42,7 @@ class AdaSTTXGBoost(BaseEstimator, ClassifierMixin):
         min_child_weight=4,
         reg_lambda=1.0,
         early_stopping_rounds=50,
+        nthread=-1,
         random_state=42,
     ):
         self.n_estimators = n_estimators
@@ -51,6 +53,7 @@ class AdaSTTXGBoost(BaseEstimator, ClassifierMixin):
         self.min_child_weight = min_child_weight
         self.reg_lambda = reg_lambda
         self.early_stopping_rounds = early_stopping_rounds
+        self.nthread = nthread
         self.random_state = random_state
         self.model_ = None
         self.num_classes_ = None
@@ -86,12 +89,14 @@ class AdaSTTXGBoost(BaseEstimator, ClassifierMixin):
             expected_wer = np.sum(w * wers, axis=1).mean()
             return "ExpectedWER", expected_wer
 
+        n_threads = self.nthread if self.nthread > 0 else os.cpu_count()
         params = {
             "disable_default_eval_metric": 1,
             "num_class": self.num_classes_,
             "objective": "multi:softprob",
             "tree_method": "hist",
-            "device": "cuda" if torch.cuda.is_available() else "cpu",
+            "device": "cpu",
+            "nthread": n_threads,
             "eta": self.learning_rate,
             "max_depth": self.max_depth,
             "min_child_weight": self.min_child_weight,

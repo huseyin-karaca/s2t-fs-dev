@@ -1,7 +1,8 @@
+import os
+
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.model_selection import train_test_split
-import torch
 import lightgbm as lgb
 
 
@@ -41,6 +42,7 @@ class AdaSTTLightGBM(BaseEstimator, ClassifierMixin):
         min_child_weight=4,
         reg_lambda=1.0,
         early_stopping_rounds=50,
+        num_threads=-1,
         random_state=42,
     ):
         self.n_estimators = n_estimators
@@ -51,6 +53,7 @@ class AdaSTTLightGBM(BaseEstimator, ClassifierMixin):
         self.min_child_weight = min_child_weight
         self.reg_lambda = reg_lambda
         self.early_stopping_rounds = early_stopping_rounds
+        self.num_threads = num_threads
         self.random_state = random_state
         self.model_ = None
         self.num_classes_ = None
@@ -75,6 +78,7 @@ class AdaSTTLightGBM(BaseEstimator, ClassifierMixin):
             expected_wer = np.sum(w * Y_val, axis=1).mean()
             return "ExpectedWER", expected_wer, False
 
+        n_threads = self.num_threads if self.num_threads > 0 else os.cpu_count()
         params = {
             "objective": obj_train,
             "num_class": self.num_classes_,
@@ -86,7 +90,8 @@ class AdaSTTLightGBM(BaseEstimator, ClassifierMixin):
             "lambda_l2": self.reg_lambda,
             "seed": self.random_state,
             "verbose": -1,
-            "device_type": "gpu" if torch.cuda.is_available() else "cpu",
+            "device_type": "cpu",
+            "num_threads": n_threads,
         }
 
         self.model_ = lgb.train(

@@ -23,6 +23,7 @@ from torch.utils.data import DataLoader
 from s2t_fs.models.adastt_mlp import AudioFeatureDataset
 from s2t_fs.models.fastt.transforms import build_transform
 from s2t_fs.models.sdtr_models import _SDTR
+from s2t_fs.utils.torch_utils import get_torch_device, seed_device
 
 
 class _FASTTBoostedNet(nn.Module):
@@ -192,15 +193,14 @@ class FASTTBoosted(BaseEstimator, ClassifierMixin):
         self.patience = patience
         self.random_state = random_state
 
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = get_torch_device()
         self.model_ = None
         self.num_classes_ = None
 
     def fit(self, X, y):
         np.random.seed(self.random_state)
         torch.manual_seed(self.random_state)
-        if torch.cuda.is_available():
-            torch.cuda.manual_seed_all(self.random_state)
+        seed_device(self.device, self.random_state)
 
         self.num_classes_ = y.shape[1]
 

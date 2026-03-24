@@ -9,6 +9,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 
+from s2t_fs.utils.torch_utils import get_torch_device, seed_device
+
 
 class AudioFeatureDataset(Dataset):
     def __init__(self, X, Y):
@@ -75,7 +77,7 @@ class AdaSTTMLP(BaseEstimator, ClassifierMixin):
         self.epochs = epochs
         self.patience = patience
         self.random_state = random_state
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = get_torch_device()
         self.model_ = None
         self.scaler_ = None
         self.num_classes_ = None
@@ -84,8 +86,7 @@ class AdaSTTMLP(BaseEstimator, ClassifierMixin):
         # Set seeds for reproducibility
         np.random.seed(self.random_state)
         torch.manual_seed(self.random_state)
-        if torch.cuda.is_available():
-            torch.cuda.manual_seed_all(self.random_state)
+        seed_device(self.device, self.random_state)
 
         self.num_classes_ = y.shape[1]
         self.scaler_ = StandardScaler()
@@ -111,7 +112,9 @@ class AdaSTTMLP(BaseEstimator, ClassifierMixin):
         scheduler = optim.lr_scheduler.ReduceLROnPlateau(
             optimizer, mode="min", patience=2, factor=0.5
         )
-        scaler_amp = torch.amp.GradScaler("cuda", enabled=self.device.type == "cuda")
+        use_amp = self.device.type == "cuda"
+        if use_amp:
+            scaler_amp = torch.amp.GradScaler("cuda")
 
         best_val_loss = float("inf")
         patience_counter = 0
@@ -123,15 +126,21 @@ class AdaSTTMLP(BaseEstimator, ClassifierMixin):
                 x_batch, y_batch = x_batch.to(self.device), y_batch.to(self.device)
                 optimizer.zero_grad()
 
-                with torch.amp.autocast("cuda", enabled=self.device.type == "cuda"):
+                if use_amp:
+                    with torch.amp.autocast("cuda"):
+                        logits = self.model_(x_batch)
+                        loss = expected_wer_loss(logits, y_batch)
+                    scaler_amp.scale(loss).backward()
+                    scaler_amp.unscale_(optimizer)
+                    torch.nn.utils.clip_grad_norm_(self.model_.parameters(), 1.0)
+                    scaler_amp.step(optimizer)
+                    scaler_amp.update()
+                else:
                     logits = self.model_(x_batch)
                     loss = expected_wer_loss(logits, y_batch)
-
-                scaler_amp.scale(loss).backward()
-                scaler_amp.unscale_(optimizer)
-                torch.nn.utils.clip_grad_norm_(self.model_.parameters(), 1.0)
-                scaler_amp.step(optimizer)
-                scaler_amp.update()
+                    loss.backward()
+                    torch.nn.utils.clip_grad_norm_(self.model_.parameters(), 1.0)
+                    optimizer.step()
 
             self.model_.eval()
             val_loss_accum = 0

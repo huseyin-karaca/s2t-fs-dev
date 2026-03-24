@@ -18,6 +18,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from s2t_fs.models.adastt_mlp import AudioFeatureDataset
+from s2t_fs.utils.torch_utils import get_torch_device, seed_device
 
 # ── Low-level PyTorch building blocks ─────────────────────────────────────
 
@@ -232,7 +233,7 @@ class _BaseSDTRWrapper(BaseEstimator, ClassifierMixin):
         self.epochs = epochs
         self.patience = patience
         self.random_state = random_state
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = get_torch_device()
         self.model_ = None
         self.num_classes_ = None
 
@@ -242,8 +243,7 @@ class _BaseSDTRWrapper(BaseEstimator, ClassifierMixin):
     def fit(self, X, y):
         np.random.seed(self.random_state)
         torch.manual_seed(self.random_state)
-        if torch.cuda.is_available():
-            torch.cuda.manual_seed_all(self.random_state)
+        seed_device(self.device, self.random_state)
 
         self.num_classes_ = y.shape[1]
         X_train, X_val, Y_train, Y_val = train_test_split(

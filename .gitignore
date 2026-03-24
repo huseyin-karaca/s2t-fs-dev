@@ -189,3 +189,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# I guess we do not need this folder in the repo
+/other/
