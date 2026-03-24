@@ -3,26 +3,23 @@ name: s2t-fs
 conda_env: environment.yml
 
 entry_points:
-  synthetic_experiment:
+  single_model_hpt:
     parameters:
-      script_name:
-        type: string
-        default: test_transform
       config:
         type: string
-        default: configs/synt-exp_fastt-alternating-diagonal.json
-    command: "python -m s2t_fs.experiment.synthetic.{script_name} --config {config}"
+        default: configs/try_to_improve_our_models_voxpopuli.json
+    command: "make run-single CONFIG={config}"
 
   model_comparison:
     parameters:
       config:
         type: string
         default: configs/model_comparison_voxpopuli.json
-    command: "python -m s2t_fs.experiment.train_multi_model --config {config}"
+    command: "make run-comparison CONFIG={config}"
 
-  single_model_hpt:
+  margin_optimization:
     parameters:
       config:
         type: string
-        default: configs/try_to_improve_our_models_voxpopuli.json
-    command: "python -m s2t_fs.experiment.train_single_model --config {config}"
+        default: configs/margin_optimization_voxpopuli.json
+    command: "make run-margin CONFIG={config}"

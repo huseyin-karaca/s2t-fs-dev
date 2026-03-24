@@ -1,47 +1,46 @@
 {
-  "mlflow_cfg": {
-    "tracking_uri": "sqlite:///s2t-fs-experiments.db",
-    "experiment_name": "Check",
-    "run_name": "FASTT-Boosted-Diagonal"
-  },
-  "data_cfg": {
-    "n_samples": 4000,
-    "n_informative": 5,
-    "n_noise": 25,
-    "n_experts": 3,
-    "test_size": 0.2,
-    "seed": 0
-  },
-  "search_cfg": {
-    "seed": 42,
-    "num_samples": 2,
-    "num_folds": 1,
-    "test_size": 0.1,
-    "refit": true
-  },
-  "model_cfg": {
-    "model_name": "FASTTBoosted",
-    "class_path": "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
-    "init_args": {
-      "transform_type": "diagonal",
-      "num_rounds": 3,
-      "num_trees": 10,
-      "random_state": 42,
-      "epochs": 10
+    "mlflow_params": {
+        "tracking_uri": "sqlite:///s2t-fs-experiments.db",
+        "experiment_name": "Check",
+        "run_name": "FASTT-Boosted-Diagonal"
     },
-    "hyperparameters": {
-      "lr": [
-        0.001,
-        0.01
-      ],
-      "lmbda": [
-        0.1,
-        0.01
-      ],
-      "depth": [
-        3,
-        4
-      ]
-    }
-  }
+    "data_params": {
+        "source": "synthetic",
+        "n_samples": 4000,
+        "n_informative": 5,
+        "n_noise": 25,
+        "n_experts": 3,
+        "test_size": 0.2,
+        "seed": 0
+    },
+    "search_params": {
+        "seed": 42,
+        "num_samples": 2,
+        "num_folds": 1,
+        "test_size": 0.1,
+        "refit": true
+    },
+    "models": {
+        "FASTTBoosted": {
+            "class_path": "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
+            "init_args": {
+                "transform_type": "diagonal",
+                "num_rounds": 3,
+                "num_trees": 10,
+                "random_state": 42,
+                "epochs": 10
+            },
+            "hyperparameters": {
+                "lr": [0.001, 0.01],
+                "lmbda": [0.1, 0.01],
+                "depth": [3, 4]
+            }
+        }
+    },
+    "callbacks": [
+        {
+            "class_path": "s2t_fs.callbacks.plot_feature_importances.PlotFeatureImportances",
+            "init_args": {"n_informative": 5}
+        }
+    ]
 }

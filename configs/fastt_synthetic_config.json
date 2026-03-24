@@ -12,27 +12,31 @@
         "test_size": 0.2,
         "seed": 42
     },
+    "search_params": {
+        "seed": 42,
+        "num_samples": 1,
+        "num_folds": 1,
+        "test_size": 0.2,
+        "refit": true
+    },
     "evaluation_params": {
         "target_model_name": "FASTT-XGB_diagonal"
     },
     "models": {
         "Always_Expert_0": {
             "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 0
-            }
+            "init_args": {"target_index": 0},
+            "hyperparameters": {}
         },
         "Always_Expert_1": {
             "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 1
-            }
+            "init_args": {"target_index": 1},
+            "hyperparameters": {}
         },
         "Always_Expert_2": {
             "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 2
-            }
+            "init_args": {"target_index": 2},
+            "hyperparameters": {}
         },
         "Raw_XGBoost": {
             "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
@@ -41,7 +45,8 @@
                 "learning_rate": 0.1,
                 "max_depth": 4,
                 "early_stopping_rounds": 10
-            }
+            },
+            "hyperparameters": {}
         },
         "FASTT-SDT_identity": {
             "class_path": "s2t_fs.models.fastt.FASTTBoosted",
@@ -55,7 +60,8 @@
                 "weight_decay": 1e-4,
                 "epochs": 60,
                 "patience": 15
-            }
+            },
+            "hyperparameters": {}
         },
         "FASTT-SDT_diagonal": {
             "class_path": "s2t_fs.models.fastt.FASTTBoosted",
@@ -70,7 +76,8 @@
                 "weight_decay": 1e-4,
                 "epochs": 60,
                 "patience": 15
-            }
+            },
+            "hyperparameters": {}
         },
         "FASTT-XGB_identity": {
             "class_path": "s2t_fs.models.fastt.FASTTAlternating",
@@ -88,7 +95,8 @@
                 "num_iterations": 5,
                 "transform_lr": 5e-3,
                 "transform_steps": 100
-            }
+            },
+            "hyperparameters": {}
         },
         "FASTT-XGB_diagonal": {
             "class_path": "s2t_fs.models.fastt.FASTTAlternating",
@@ -107,7 +115,14 @@
                 "num_iterations": 5,
                 "transform_lr": 5e-3,
                 "transform_steps": 100
-            }
+            },
+            "hyperparameters": {}
         }
-    }
+    },
+    "callbacks": [
+        {
+            "class_path": "s2t_fs.callbacks.plot_feature_importances.PlotFeatureImportances",
+            "init_args": {"n_informative": 15}
+        }
+    ]
 }
