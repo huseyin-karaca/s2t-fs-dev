@@ -1,0 +1,27 @@
+{
+  "target_models": [
+    "FASTT_Alternating",
+    "FASTT_Boosted"
+  ],
+  "best_target_model": "FASTT_Boosted",
+  "our_best_wer": 0.18389344215393066,
+  "our_all_wers": {
+    "FASTT_Alternating": 0.18396246433258057,
+    "FASTT_Boosted": 0.18389344215393066
+  },
+  "best_competitor": "Raw_SDT",
+  "best_competitor_wer": 0.18356135487556458,
+  "wer_margin": -0.00033208727836608887,
+  "all_results": {
+    "Dummy_0": 0.19509568810462952,
+    "Dummy_1": 0.20355568826198578,
+    "Dummy_2": 0.22076170146465302,
+    "Random_Ensemble": 0.20741181075572968,
+    "Raw_SDT": 0.18356135487556458,
+    "Raw_XGBoost": 0.1878456324338913,
+    "SelectKBest_SDT": 0.1867303103208542,
+    "SelectKBest_XGBoost": 0.19467303156852722,
+    "FASTT_Boosted": 0.18389344215393066,
+    "FASTT_Alternating": 0.18396246433258057
+  }
+}

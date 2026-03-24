@@ -1,0 +1,13 @@
+{
+  "cv_mean_train_time": 765.9363129138947,
+  "cv_mean_test_time": 0.022893190383911133,
+  "cv_mean_train_wer": 0.17724274098873138,
+  "cv_mean_test_wer": 0.17563824355602264,
+  "wer_test": 0.18396246433258057,
+  "dataset_statistics": {
+    "num_features": 1672,
+    "num_total_rows": 5939,
+    "train_size": 5048,
+    "test_size": 891
+  }
+}
