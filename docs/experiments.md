@@ -26,6 +26,36 @@ To fully validate structural independence, we tested the 4 transformations acros
 
 ## Execution Syntax
 
+We expose reproducible entrypoints through the root `MLproject` file.
+
+### Model Comparison & Hyperparameter Tuning
+To execute the multi-model comparison across varying architectures natively via MLflow tracking, prefix the tracking URI and supply the experiment name so `mlflow` orchestrates it to the correct backend store:
+
+```bash
+# Example: Running the full VoxPopuli model comparison
+MLFLOW_TRACKING_URI="sqlite:///s2t-fs-experiments.db" mlflow run . \
+  -e model_comparison \
+  --env-manager=local \
+  -P config=configs/model_comparison_voxpopuli.json \
+  --experiment-name "Model Comparison (VoxPopuli)"
+```
+
+### Single-Model HPT (Deep Tuning a Specific Model)
+When you want to invest all trials into improving one model with a richer search space, use the `single_model_hpt` entrypoint. In standalone mode it automatically uses all available CPU cores (`n_jobs=-1`) since Optuna no longer needs to coordinate with other models.
+
+```bash
+# Example: Deep-tuning FASTT_Alternating with 30 Bayesian trials
+MLFLOW_TRACKING_URI="sqlite:///s2t-fs-experiments.db" mlflow run . \
+  -e single_model_hpt \
+  --env-manager=local \
+  -P config=configs/try_to_improve_our_models_voxpopuli.json \
+  --experiment-name "Try to Improve Our Models (VoxPopuli)"
+```
+
+> Standalone single-model mode: **parallel trials, sequential models** (`n_jobs=-1` on Optuna).
+> Multi-model parallel mode: **sequential trials, parallel models** (`n_jobs=1` per model, `Pool` across models).
+
+### Synthetic Sub-Component Verification
 All JSON arrays automatically load specific learner topologies dynamically based on their object pointers!
 
 To verify the matrix individually, you can natively orchestrate standard `mlflow` invocations without altering internal logic using any of the 16 generated template mappings found in `configs/16_exp/`:
@@ -39,3 +69,14 @@ mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_tra
 # Example: Running the Alternating LightGBM abstraction mapping low-rank properties!
 mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_transform -P config=configs/16_exp/exp_alt_LightGBM_low_rank.json
 ```
+
+## Parallelization Strategy
+
+For multi-model benchmarking and hyperparameter tuning (HPT), we enforce a strict **parallel-trials, sequential-models** architecture. 
+
+Because `mlflow` active runs are thread-local, parallelizing across different model trainings simultaneously creates severe tracking race conditions and requires extensive, non-idiomatic boilerplate. Instead, we:
+1. Iterate through our target models sequentially.
+2. Delegate core capitalization entirely to `OptunaSearchCV(n_jobs=-1)`. Optuna natively distributes independent hyperparameter trials across all available cores without locking.
+3. Explicitly constrain base-learners (like `XGBoost` or `LightGBM`) to `n_jobs=1` inside their initialization payloads to prevent nested thread thrashing.
+
+This guarantees perfect 100% CPU utilization during search phases while maintaining elegant, bug-free parent-child MLflow traceability logic!

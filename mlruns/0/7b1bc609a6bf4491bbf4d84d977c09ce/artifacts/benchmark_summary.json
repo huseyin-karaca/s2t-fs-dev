@@ -1,0 +1,19 @@
+{
+  "target_model": "FASTT_Alternating",
+  "our_wer": 0.19238995015621185,
+  "best_competitor": "SelectKBest_XGBoost",
+  "best_competitor_wer": 0.19022373855113983,
+  "wer_margin": -0.0021662116050720215,
+  "all_results": {
+    "Dummy_0": 0.1976379007101059,
+    "Dummy_1": 0.2080937922000885,
+    "Dummy_2": 0.23086199164390564,
+    "Random_Ensemble": 0.21476313471794128,
+    "Raw_SDT": 0.1906386911869049,
+    "Raw_XGBoost": 0.1938551515340805,
+    "SelectKBest_SDT": 0.19871823489665985,
+    "SelectKBest_XGBoost": 0.19022373855113983,
+    "FASTT_Boosted": 0.2080937922000885,
+    "FASTT_Alternating": 0.19238995015621185
+  }
+}

@@ -13,3 +13,16 @@ entry_points:
         default: configs/synt-exp_fastt-alternating-diagonal.json
     command: "python -m s2t_fs.experiment.synthetic.{script_name} --config {config}"
 
+  model_comparison:
+    parameters:
+      config:
+        type: string
+        default: configs/model_comparison_voxpopuli.json
+    command: "python -m s2t_fs.experiment.train_multi_model --config {config}"
+
+  single_model_hpt:
+    parameters:
+      config:
+        type: string
+        default: configs/try_to_improve_our_models_voxpopuli.json
+    command: "python -m s2t_fs.experiment.train_single_model --config {config}"
