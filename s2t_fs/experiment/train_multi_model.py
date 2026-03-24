@@ -1,7 +1,12 @@
 """
 Level 2 — Multi-Model Comparison Benchmark.
 
-Runs Level 1 (single-model HPT) for each model in parallel via a process pool.
+Runs Level 1 (single-model HPT) for each model defined in the config.
+Execution is **sequential by default** (safe on all hardware).
+Model-level parallelism can be enabled via ``model_parallel: true`` in
+``search_params``, but only for CPU-only model sets — a GPU safety guard
+automatically falls back to sequential when GPU models are detected.
+
 Can be called:
   - **Standalone** via CLI or ``make run-comparison``
   - **From Level 3** (margin optimization) with pre-loaded data and an explicit run_id
@@ -11,8 +16,8 @@ MLflow hierarchy: Comparison (parent) → per-model Tuning (children).
 
 import argparse
 import json
+import multiprocessing
 import os
-from multiprocessing import Pool, cpu_count
 
 import mlflow
 from mlflow.tracking import MlflowClient
@@ -21,6 +26,55 @@ from s2t_fs.data.loader import load_and_prepare_data
 from s2t_fs.experiment.train_single_model import hpt_single_model
 from s2t_fs.utils.logger import custom_logger as logger
 from s2t_fs.utils.mlflow_utils import compute_and_log_margin, log_experiment_metadata
+
+_GPU_MODEL_CLASSES = frozenset({
+    "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
+    "s2t_fs.models.fastt.fastt_alternating.FASTTAlternating",
+    "s2t_fs.models.sdtr_models.BoostedSDTR",
+    "s2t_fs.models.sdtr_models.SingleSDTR",
+    "s2t_fs.models.adastt_mlp.AdaSTTMLP",
+})
+
+
+# ---------------------------------------------------------------------------
+# Parallelism helpers
+# ---------------------------------------------------------------------------
+
+
+def _resolve_model_parallel(search_params: dict) -> bool:
+    """Resolve whether models should run in parallel processes.
+
+    Reads ``model_parallel`` from search_params. Falls back to the legacy
+    ``parallel`` key for backward compatibility. Default is False (sequential
+    execution), which is safe on all hardware including Apple MPS.
+    """
+    if "model_parallel" in search_params:
+        return bool(search_params["model_parallel"])
+    if "parallel" in search_params:
+        logger.warning(
+            "'parallel' key in search_params is deprecated. "
+            "Use 'trial_parallel' and 'model_parallel' instead."
+        )
+        return bool(search_params["parallel"])
+    return False
+
+
+def _has_gpu_models(models_config: dict) -> bool:
+    """Check if any model in the config uses GPU acceleration.
+
+    Inspects ``class_path`` values (including nested Pipeline steps) against
+    the known set of GPU-accelerated model classes.
+    """
+    for m_cfg in models_config.values():
+        class_path = m_cfg.get("class_path", "")
+        if class_path in _GPU_MODEL_CLASSES:
+            return True
+        for step in m_cfg.get("init_args", {}).get("steps", []):
+            if isinstance(step, list) and len(step) > 1:
+                nested = step[1]
+                if isinstance(nested, dict) and nested.get("class_path", "") in _GPU_MODEL_CLASSES:
+                    return True
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -183,18 +237,32 @@ def multi_model_experiment(
                 config_path,
             ))
 
-        parallel = search_params.get("parallel", True)
+        model_parallel = _resolve_model_parallel(search_params)
+        use_pool = model_parallel
 
-        if parallel:
-            n_workers = min(len(worker_args), cpu_count())
-            logger.bind(category="Orchestrator").info(
-                f"Launching {len(worker_args)} model(s) across {n_workers} worker(s) [parallel]."
+        if model_parallel and _has_gpu_models(models):
+            logger.bind(category="Orchestrator").warning(
+                "model_parallel=true but GPU-accelerated models detected. "
+                "Falling back to sequential execution to avoid GPU contention "
+                "(MPS is single-process; CUDA fork is unsafe)."
             )
-            with Pool(processes=n_workers) as pool:
+            use_pool = False
+
+        if use_pool:
+            n_workers = min(len(worker_args), os.cpu_count() or 1)
+            logger.bind(category="Orchestrator").info(
+                f"Launching {len(worker_args)} model(s) across "
+                f"{n_workers} worker(s) [parallel, spawn context]."
+            )
+            ctx = multiprocessing.get_context("spawn")
+            with ctx.Pool(processes=n_workers) as pool:
                 outputs = pool.map(_run_model_worker, worker_args)
         else:
+            label = "sequentially"
+            if model_parallel:
+                label = "sequentially (GPU safety fallback)"
             logger.bind(category="Orchestrator").info(
-                f"Running {len(worker_args)} model(s) sequentially."
+                f"Running {len(worker_args)} model(s) {label}."
             )
             outputs = [_run_model_worker(wa) for wa in worker_args]
 

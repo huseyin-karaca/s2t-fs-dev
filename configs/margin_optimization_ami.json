@@ -40,7 +40,8 @@
             0.15
         ],
         "refit": true,
-        "parallel": false
+        "trial_parallel": false,
+        "model_parallel": false
     },
     "evaluation_params": {
         "target_model_names": [

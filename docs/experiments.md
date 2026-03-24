@@ -52,8 +52,9 @@ MLFLOW_TRACKING_URI="sqlite:///s2t-fs-experiments.db" mlflow run . \
   --experiment-name "Try to Improve Our Models (VoxPopuli)"
 ```
 
-> Standalone single-model mode: **parallel trials, sequential models** (`n_jobs=-1` on Optuna).
-> Multi-model parallel mode: **sequential trials, parallel models** (`n_jobs=1` per model, `Pool` across models).
+> By default, both trials and models run **sequentially** (`trial_parallel: false`, `model_parallel: false`).
+> This is optimal for TPE-based sampling and safe on all hardware.
+> See [Orchestration & Parallelism](experiment_orchestration.md) for details.
 
 ### Synthetic Sub-Component Verification
 All JSON arrays automatically load specific learner topologies dynamically based on their object pointers!
@@ -72,11 +73,21 @@ mlflow run . -e synthetic_experiment --env-manager=local -P script_name=test_tra
 
 ## Parallelization Strategy
 
-For multi-model benchmarking and hyperparameter tuning (HPT), we enforce a strict **parallel-trials, sequential-models** architecture. 
+By default, all execution is **fully sequential**: models run one at a time,
+and each model's HPT trials run sequentially (`n_jobs=1`). This is optimal for
+TPE-based Bayesian sampling and safe across all hardware (Mac MPS, CUDA, CPU).
 
-Because `mlflow` active runs are thread-local, parallelizing across different model trainings simultaneously creates severe tracking race conditions and requires extensive, non-idiomatic boilerplate. Instead, we:
-1. Iterate through our target models sequentially.
-2. Delegate core capitalization entirely to `OptunaSearchCV(n_jobs=-1)`. Optuna natively distributes independent hyperparameter trials across all available cores without locking.
-3. Explicitly constrain base-learners (like `XGBoost` or `LightGBM`) to `n_jobs=1` inside their initialization payloads to prevent nested thread thrashing.
+Each model gets **exclusive access to all hardware resources** during its
+execution:
 
-This guarantees perfect 100% CPU utilization during search phases while maintaining elegant, bug-free parent-child MLflow traceability logic!
+- XGBoost / LightGBM use all CPU cores (`nthread = os.cpu_count()`)
+- GPU models (FASTT_Boosted, BoostedSDTR, AdaSTTMLP) get sole GPU access
+
+Two independent config flags allow opting into parallelism when appropriate:
+
+- `trial_parallel: true` — parallel Optuna trials (degrades TPE, use only with
+  non-Bayesian samplers)
+- `model_parallel: true` — parallel model execution (CPU-only models only; a
+  GPU safety guard prevents unsafe GPU contention)
+
+For full details, see [Orchestration & Parallelism](experiment_orchestration.md).

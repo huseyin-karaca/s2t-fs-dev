@@ -26,6 +26,7 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - Experimental Design: experiments.md
+  - Orchestration & Parallelism: experiment_orchestration.md
   - Transforms Rationale: synthetic_transforms_rationale.md
 
 plugins:

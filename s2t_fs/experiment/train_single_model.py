@@ -25,6 +25,24 @@ from s2t_fs.utils.logger import custom_logger as logger
 from s2t_fs.utils.mlflow_utils import log_experiment_metadata, log_experiment_results
 
 
+def _resolve_trial_parallel(search_params: dict) -> bool:
+    """Resolve whether OptunaSearchCV trials should run in parallel.
+
+    Reads ``trial_parallel`` from search_params. Falls back to the legacy
+    ``parallel`` key for backward compatibility. Default is False (sequential
+    trials), which is optimal for TPE-based sampling.
+    """
+    if "trial_parallel" in search_params:
+        return bool(search_params["trial_parallel"])
+    if "parallel" in search_params:
+        logger.warning(
+            "'parallel' key in search_params is deprecated. "
+            "Use 'trial_parallel' and 'model_parallel' instead."
+        )
+        return bool(search_params["parallel"])
+    return False
+
+
 def hpt_single_model(
     model_name,
     model_cfg,
@@ -101,12 +119,9 @@ def hpt_single_model(
         search = None
         best_estimator = model_instance
     else:
-        # Respect the "parallel" flag from search_params:
-        #   parallel=True  → n_jobs=-1 (parallel trials, faster wall-clock)
-        #   parallel=False → n_jobs=1  (sequential trials, better TPE feedback)
-        parallel = search_params.get("parallel", True)
-        n_jobs = -1 if parallel else 1
-        mode_label = "parallel" if parallel else "sequential"
+        trial_parallel = _resolve_trial_parallel(search_params)
+        n_jobs = -1 if trial_parallel else 1
+        mode_label = "parallel" if trial_parallel else "sequential"
         logger.bind(category="Inner-Run").info(
             f"HPT of {model_name}: {n_trials} trials ({mode_label} trials)"
         )

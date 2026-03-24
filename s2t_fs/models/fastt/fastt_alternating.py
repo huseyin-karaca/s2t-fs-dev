@@ -23,6 +23,7 @@ import torch
 import torch.nn as nn
 
 from s2t_fs.models.fastt.transforms import build_transform
+from s2t_fs.utils.torch_utils import get_torch_device, seed_device
 
 
 class _LinearSurrogate(nn.Module):
@@ -41,8 +42,9 @@ class _LinearSurrogate(nn.Module):
 
     def fit(self, u_np: np.ndarray, q_np: np.ndarray, lr=1e-2, steps=200):
         """Least-squares fit of surrogate to selector outputs."""
-        u_t = torch.tensor(u_np, dtype=torch.float32)
-        q_t = torch.tensor(q_np, dtype=torch.float32)
+        device = next(self.parameters()).device
+        u_t = torch.tensor(u_np, dtype=torch.float32).to(device)
+        q_t = torch.tensor(q_np, dtype=torch.float32).to(device)
         optimizer = torch.optim.Adam(self.parameters(), lr=lr)
         for _ in range(steps):
             optimizer.zero_grad()
@@ -101,6 +103,7 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
         self.transform_lambda2 = transform_lambda2
         self.random_state = random_state
 
+        self.device = get_torch_device()
         self.transform_ = None
         self.selector_ = None
         self.num_classes_ = None
@@ -114,6 +117,7 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
     def fit(self, X, y):
         np.random.seed(self.random_state)
         torch.manual_seed(self.random_state)
+        seed_device(self.device, self.random_state)
 
         self.num_classes_ = y.shape[1]
         in_features = X.shape[1]
@@ -130,17 +134,18 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
             t_kwargs.setdefault("weight_decay", self.transform_weight_decay)
         self.transform_ = build_transform(
             self.transform_type, in_features=in_features, **t_kwargs
-        )
+        ).to(self.device)
 
-        z_tensor = torch.tensor(X, dtype=torch.float32)
+        z_tensor = torch.tensor(X, dtype=torch.float32).to(self.device)
 
         for iteration in range(self.num_iterations):
             # ── Step 1: Transform features ───────────────────────────────
             with torch.no_grad():
                 u_tensor = self.transform_(z_tensor)
-            u_np = u_tensor.numpy().astype(np.float32)
+            u_np = u_tensor.cpu().numpy().astype(np.float32)
 
             # ── Step 2: Selector update (fix θ, optimize ψ) ─────────────
+            # Base selector (e.g. XGBoost) always runs on CPU with numpy
             self.selector_ = clone(self.base_selector)
             self.selector_.fit(u_np, y)
 
@@ -148,20 +153,20 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
             # 3a. Get selector's predictions as logits
             q_np = self._get_selector_logits(u_np)
 
-            # 3b. Fit differentiable surrogate: linear model u → q
+            # 3b. Fit differentiable surrogate on device: linear model u → q
             u_dim = u_np.shape[1]
-            surrogate = _LinearSurrogate(u_dim, self.num_classes_)
+            surrogate = _LinearSurrogate(u_dim, self.num_classes_).to(self.device)
             self._fit_surrogate(surrogate, u_np, q_np)
 
             # 3c. Backprop through: z → Tθ(z) → surrogate → softmax → E[WER]
-            wer_tensor = torch.tensor(y, dtype=torch.float32)
+            wer_tensor = torch.tensor(y, dtype=torch.float32).to(self.device)
             self._update_transform(
                 z_tensor, wer_tensor, surrogate, self.transform_lr, self.transform_steps
             )
 
         # Final selector fit on final transformed features
         with torch.no_grad():
-            u_final = self.transform_(z_tensor).numpy().astype(np.float32)
+            u_final = self.transform_(z_tensor).cpu().numpy().astype(np.float32)
         self.selector_ = clone(self.base_selector)
         self.selector_.fit(u_final, y)
 
@@ -169,8 +174,8 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
 
     def _fit_surrogate(self, surrogate, u_np, q_np, lr=1e-2, steps=200):
         """Least-squares fit of linear surrogate to selector's logits."""
-        u_t = torch.tensor(u_np, dtype=torch.float32)
-        q_t = torch.tensor(q_np, dtype=torch.float32)
+        u_t = torch.tensor(u_np, dtype=torch.float32).to(self.device)
+        q_t = torch.tensor(q_np, dtype=torch.float32).to(self.device)
         optimizer = torch.optim.Adam(surrogate.parameters(), lr=lr)
         for _ in range(steps):
             optimizer.zero_grad()
@@ -202,15 +207,15 @@ class FASTTAlternating(BaseEstimator, ClassifierMixin):
             optimizer.step()
 
     def predict_proba(self, X):
-        z_tensor = torch.tensor(X, dtype=torch.float32)
+        z_tensor = torch.tensor(X, dtype=torch.float32).to(self.device)
         with torch.no_grad():
-            u = self.transform_(z_tensor).numpy().astype(np.float32)
+            u = self.transform_(z_tensor).cpu().numpy().astype(np.float32)
         return self.selector_.predict_proba(u)
 
     def predict(self, X):
-        z_tensor = torch.tensor(X, dtype=torch.float32)
+        z_tensor = torch.tensor(X, dtype=torch.float32).to(self.device)
         with torch.no_grad():
-            u = self.transform_(z_tensor).numpy().astype(np.float32)
+            u = self.transform_(z_tensor).cpu().numpy().astype(np.float32)
         return self.selector_.predict(u)
 
     def score(self, X, y):

@@ -1,0 +1,77 @@
+{
+    "mlflow_params": {
+        "tracking_uri": "sqlite:///s2t-fs-experiments.db",
+        "experiment_name": "Try to Improve Our Models (Ami)"
+    },
+    "data_params": {
+        "dataset": "ami",
+        "row_subsample": 1,
+        "feature_subsample": 1,
+        "standard_normalize": true,
+        "seed": 42,
+        "test_size": 0.1
+    },
+    "search_params": {
+        "seed": 42,
+        "num_samples": 50,
+        "num_folds": 1,
+        "test_size": 0.1,
+        "refit": true,
+        "trial_parallel": false,
+        "model_parallel": false        
+    },
+    "models": {
+        "FASTT_Boosted": {
+            "class_path": "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
+            "init_args": {
+                "random_state": 42,
+                "batch_size": 512,
+                "patience": 20
+            },
+            "hyperparameters": {
+                "transform_type": [
+                    "diagonal",
+                    "linear",
+                    "low_rank",
+                    "nonlinear"
+                ],
+                "num_rounds": [
+                    2,
+                    3,
+                    5,
+                    8
+                ],
+                "num_trees": [
+                    5,
+                    10,
+                    15,
+                    20
+                ],
+                "depth": [
+                    3,
+                    4,
+                    6,
+                    8
+                ],
+                "lr": [
+                    0.0001,
+                    0.0005,
+                    0.001,
+                    0.005,
+                    0.01
+                ],
+                "weight_decay": [
+                    0.00001,
+                    0.0001,
+                    0.001,
+                    0.01
+                ],
+                "epochs": [
+                    30,
+                    60,
+                    100
+                ]
+            }
+        }
+    }
+}
