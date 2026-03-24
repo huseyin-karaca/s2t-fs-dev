@@ -162,6 +162,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+docs/site/
 
 # mypy
 .mypy_cache/
@@ -192,3 +193,7 @@ cython_debug/
 
 # I guess we do not need this folder in the repo
 /other/
+/mlruns/
+.vscode/
+.cursor/
+.agents/

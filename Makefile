@@ -88,17 +88,17 @@ run:
 ## Serve documentation locally
 .PHONY: docs-serve
 docs-serve:
-	mkdocs serve
+	mkdocs serve --config-file docs/mkdocs.yml
 
 ## Build documentation
 .PHONY: docs-build
 docs-build:
-	mkdocs build
+	mkdocs build --config-file docs/mkdocs.yml
 
 ## Deploy documentation to gh-pages locally
 .PHONY: docs-deploy
 docs-deploy:
-	mkdocs gh-deploy --force
+	mkdocs gh-deploy --force --config-file docs/mkdocs.yml
 
 
 #################################################################################
