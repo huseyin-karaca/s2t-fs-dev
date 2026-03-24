@@ -1,5 +1,16 @@
 # Data
-/data/
+# /data/
+# 1. Ignore all files inside the specific data subfolders
+/data/raw/*
+/data/processed/*
+# /data/interim/*
+# /data/external/*
+
+# 2. Un-ignore the .gitkeep files so Git tracks the empty folders
+!/data/raw/.gitkeep
+!/data/processed/.gitkeep
+# !/data/interim/.gitkeep
+# !/data/external/.gitkeep
 
 # Mac OS-specific storage files
 .DS_Store
