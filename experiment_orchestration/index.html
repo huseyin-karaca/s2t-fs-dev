@@ -1,0 +1,1413 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Hüseyin Karaca">
+      
+      
+      
+        <link rel="prev" href="../experiments/">
+      
+      
+        <link rel="next" href="../synthetic_transforms_rationale/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Orchestration & Parallelism - S2T-FS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#experiment-orchestration-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="S2T-FS" class="md-header__button md-logo" aria-label="S2T-FS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            S2T-FS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Orchestration & Parallelism
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/huseyin-karaca/s2t-fs-dev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="S2T-FS" class="md-nav__button md-logo" aria-label="S2T-FS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    S2T-FS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/huseyin-karaca/s2t-fs-dev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experiments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experimental Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration & Parallelism
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration & Parallelism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#execution-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Entry Point
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tier-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3-Tier Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3-Tier Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-1-single-model-hpt-train_single_modelpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 — Single-Model HPT (train_single_model.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-multi-model-comparison-train_multi_modelpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 — Multi-Model Comparison (train_multi_model.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-margin-optimization-train_margin_optimizationpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 — Margin Optimization (train_margin_optimization.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mlflow-tracking-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLflow Tracking Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelism-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelism Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parallelism Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trial_parallel-default-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial_parallel (default: false)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model_parallel-default-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_parallel (default: false)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backward Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-configurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Configurations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-accelerator-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware &amp; Accelerator Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware &amp; Accelerator Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device-auto-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Auto-Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpu-vs-cpu-model-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU vs CPU Model Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-utilization-in-sequential-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Utilization in Sequential Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpu-safety-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU Safety Guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speed-expectations-by-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speed Expectations by Hardware
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Speed Expectations by Hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apple-silicon-mps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apple Silicon (MPS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvidia-gpu-cuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NVIDIA GPU (CUDA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU-Only
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Optimizations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Optimizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fasttalternating-architecture-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FASTTAlternating Architecture Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-parallel-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid Parallel Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../synthetic_transforms_rationale/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transforms Rationale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#execution-entry-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Entry Point
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tier-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3-Tier Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3-Tier Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#level-1-single-model-hpt-train_single_modelpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 1 — Single-Model HPT (train_single_model.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-2-multi-model-comparison-train_multi_modelpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 2 — Multi-Model Comparison (train_multi_model.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#level-3-margin-optimization-train_margin_optimizationpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Level 3 — Margin Optimization (train_margin_optimization.py)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mlflow-tracking-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLflow Tracking Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelism-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parallelism Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parallelism Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trial_parallel-default-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trial_parallel (default: false)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model_parallel-default-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        model_parallel (default: false)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backward-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backward Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-configurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Configurations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-accelerator-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware &amp; Accelerator Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware &amp; Accelerator Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#device-auto-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Device Auto-Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpu-vs-cpu-model-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU vs CPU Model Classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-utilization-in-sequential-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Utilization in Sequential Mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpu-safety-guard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GPU Safety Guard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speed-expectations-by-hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Speed Expectations by Hardware
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Speed Expectations by Hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apple-silicon-mps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apple Silicon (MPS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvidia-gpu-cuda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NVIDIA GPU (CUDA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU-Only
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Optimizations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Future Optimizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fasttalternating-architecture-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FASTTAlternating Architecture Note
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hybrid-parallel-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid Parallel Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="experiment-orchestration-architecture">Experiment Orchestration Architecture</h1>
+<p>This document describes the 3-tier experiment execution hierarchy, the MLflow
+tracking structure, parallelism configuration, and hardware considerations.</p>
+<h2 id="execution-entry-point">Execution Entry Point</h2>
+<p>All experiments are launched through a single unified CLI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>s2t_fs.experiment<span class="w"> </span>--config<span class="w"> </span>configs/&lt;config&gt;.json<span class="w"> </span><span class="o">[</span>--mode<span class="w"> </span>single<span class="p">|</span>multi<span class="p">|</span>margin<span class="o">]</span>
+</code></pre></div>
+<p>Or equivalently via <code>make</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>run-single<span class="w">   </span><span class="nv">CONFIG</span><span class="o">=</span>configs/some_config.json
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>make<span class="w"> </span>run-comparison<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/some_config.json
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>make<span class="w"> </span>run-margin<span class="w">   </span><span class="nv">CONFIG</span><span class="o">=</span>configs/some_config.json
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>make<span class="w"> </span>run<span class="w">          </span><span class="nv">CONFIG</span><span class="o">=</span>configs/some_config.json<span class="w">   </span><span class="c1"># auto-detect mode</span>
+</code></pre></div>
+<p>Mode auto-detection logic (when <code>--mode</code> is omitted):</p>
+<ol>
+<li>Config contains <code>optimization_params</code> or list-valued <code>data_params</code>/<code>search_params</code> &rarr; <strong>margin</strong></li>
+<li>Config contains multiple entries in <code>models</code> &rarr; <strong>multi</strong></li>
+<li>Otherwise &rarr; <strong>single</strong></li>
+</ol>
+<hr />
+<h2 id="3-tier-hierarchy">3-Tier Hierarchy</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Level 3: Margin Optimization Study
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  └── Optuna study.optimize() with TPESampler (sequential trials)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>      └── Each trial resolves list-valued data/search params
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>          └── Level 2: Multi-Model Comparison
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>              └── Sequential loop over models (default)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                  └── Level 1: Single-Model HPT
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                      └── OptunaSearchCV (sequential trials by default)
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                          └── Model.fit() per trial
+</code></pre></div>
+<h3 id="level-1-single-model-hpt-train_single_modelpy">Level 1 — Single-Model HPT (<code>train_single_model.py</code>)</h3>
+<p>Runs <code>OptunaSearchCV</code> for one model. Can be invoked standalone or called by
+Level 2 with pre-loaded data and an explicit MLflow <code>run_id</code>.</p>
+<p>Key behavior:</p>
+<ul>
+<li>Reads <code>trial_parallel</code> from <code>search_params</code> (default: <code>false</code>)</li>
+<li><code>false</code> &rarr; <code>OptunaSearchCV(n_jobs=1)</code> — sequential trials, optimal for TPE</li>
+<li><code>true</code> &rarr; <code>OptunaSearchCV(n_jobs=-1)</code> — parallel trials (degrades TPE)</li>
+</ul>
+<h3 id="level-2-multi-model-comparison-train_multi_modelpy">Level 2 — Multi-Model Comparison (<code>train_multi_model.py</code>)</h3>
+<p>Runs Level 1 for each model in the config. Can be invoked standalone or called
+by Level 3.</p>
+<p>Key behavior:</p>
+<ul>
+<li>Reads <code>model_parallel</code> from <code>search_params</code> (default: <code>false</code>)</li>
+<li><code>false</code> &rarr; sequential loop over models (safe on all hardware)</li>
+<li><code>true</code> &rarr; process pool with <code>spawn</code> context, <strong>but only if all models are
+  CPU-only</strong>; a GPU safety guard detects GPU-accelerated models and
+  automatically falls back to sequential with a warning</li>
+</ul>
+<h3 id="level-3-margin-optimization-train_margin_optimizationpy">Level 3 — Margin Optimization (<code>train_margin_optimization.py</code>)</h3>
+<p>Uses Optuna <code>study.optimize()</code> to search over data/search hyperparameters
+(specified as lists in config). Each trial runs a full Level 2 comparison.
+The objective is to maximize the WER margin (find configurations where our
+proprietary models outperform competitors the most).</p>
+<ul>
+<li>Always uses <code>n_jobs=1</code> for the outer Optuna study (sequential, TPE)</li>
+<li>Delegates all model execution to Level 2</li>
+</ul>
+<hr />
+<h2 id="mlflow-tracking-hierarchy">MLflow Tracking Hierarchy</h2>
+<p>Each tier creates an appropriate parent-child run structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Level 3 (Margin Optimization):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  Margin_Optimization_Study (parent)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    ├── Trial_0_Comparison (child)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    │   ├── Model_Tuning_Dummy_0 (grandchild)
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    │   ├── Model_Tuning_XGBoost (grandchild)
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    │   └── Model_Tuning_FASTT_Boosted (grandchild)
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    ├── Trial_1_Comparison (child)
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    │   └── ...
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    └── ...
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Level 2 (Multi-Model):
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  Multi_Model_Benchmark (parent)
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    ├── Model_Tuning_Dummy_0 (child)
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    ├── Model_Tuning_XGBoost (child)
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    └── Model_Tuning_FASTT_Boosted (child)
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>Level 1 (Single-Model):
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>  Model_Tuning_&lt;name&gt; (standalone run)
+</code></pre></div>
+<p>All child/grandchild runs are created via <code>MlflowClient</code> (process-safe API),
+not the fluent <code>mlflow.start_run()</code> API, ensuring correctness in both
+sequential and parallel modes.</p>
+<hr />
+<h2 id="parallelism-configuration">Parallelism Configuration</h2>
+<p>The <code>search_params</code> section of the config JSON supports two independent flags:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">&quot;search_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;trial_parallel&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;model_parallel&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">&quot;num_samples&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">&quot;num_folds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="nt">&quot;refit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="trial_parallel-default-false"><code>trial_parallel</code> (default: <code>false</code>)</h3>
+<p>Controls <code>n_jobs</code> in <code>OptunaSearchCV</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td><code>n_jobs=1</code> — sequential trials. <strong>Recommended for TPE.</strong> Each trial sees the full history of past trials, maximizing sample efficiency.</td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td><code>n_jobs=-1</code> — parallel trials. Faster wall-clock but degrades TPE's Bayesian feedback loop. Only use with non-Bayesian samplers (e.g., <code>RandomSampler</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="model_parallel-default-false"><code>model_parallel</code> (default: <code>false</code>)</h3>
+<p>Controls model-level execution in Level 2:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>false</code></td>
+<td>Sequential model loop. Each model gets full access to all hardware (GPU + all CPU cores). <strong>Recommended.</strong></td>
+</tr>
+<tr>
+<td><code>true</code></td>
+<td>Attempts to run models in parallel via a process pool (<code>spawn</code> context). A GPU safety guard checks the config: if any GPU-accelerated model is present, it <strong>automatically falls back to sequential</strong> with a warning. Only effective for CPU-only model sets.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="backward-compatibility">Backward Compatibility</h3>
+<p>The legacy <code>"parallel"</code> key is still supported. If <code>trial_parallel</code> /
+<code>model_parallel</code> are absent but <code>"parallel"</code> exists, both flags inherit its
+value and a deprecation warning is logged.</p>
+<h3 id="recommended-configurations">Recommended Configurations</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th style="text-align: center;"><code>trial_parallel</code></th>
+<th style="text-align: center;"><code>model_parallel</code></th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default / production</strong></td>
+<td style="text-align: center;"><code>false</code></td>
+<td style="text-align: center;"><code>false</code></td>
+<td>Safe on all hardware. Optimal TPE. Each model gets full resources.</td>
+</tr>
+<tr>
+<td>CPU-only models, many models</td>
+<td style="text-align: center;"><code>false</code></td>
+<td style="text-align: center;"><code>true</code></td>
+<td>Models run in parallel process pool. Modest wall-clock improvement.</td>
+</tr>
+<tr>
+<td>Non-TPE sampler (e.g., Random)</td>
+<td style="text-align: center;"><code>true</code></td>
+<td style="text-align: center;"><code>false</code></td>
+<td>Parallel trials per model. Faster but no Bayesian guidance.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="hardware-accelerator-support">Hardware &amp; Accelerator Support</h2>
+<h3 id="device-auto-detection">Device Auto-Detection</h3>
+<p><code>s2t_fs.utils.torch_utils.get_torch_device()</code> returns the best available device:</p>
+<ol>
+<li><strong>Apple Metal (MPS)</strong> — Apple Silicon via Metal Performance Shaders</li>
+<li><strong>CUDA</strong> — NVIDIA GPU</li>
+<li><strong>CPU</strong> — fallback</li>
+</ol>
+<h3 id="gpu-vs-cpu-model-classification">GPU vs CPU Model Classification</h3>
+<p>Models are classified by whether they call <code>get_torch_device()</code> and move
+tensors to an accelerator:</p>
+<table>
+<thead>
+<tr>
+<th>Model Class</th>
+<th>Hardware</th>
+<th>Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FASTTBoosted</code></td>
+<td><strong>GPU</strong> (MPS/CUDA)</td>
+<td><code>s2t_fs.models.fastt.fastt_boosted</code></td>
+</tr>
+<tr>
+<td><code>BoostedSDTR</code> / <code>SingleSDTR</code></td>
+<td><strong>GPU</strong> (MPS/CUDA)</td>
+<td><code>s2t_fs.models.sdtr_models</code></td>
+</tr>
+<tr>
+<td><code>AdaSTTMLP</code></td>
+<td><strong>GPU</strong> (MPS/CUDA)</td>
+<td><code>s2t_fs.models.adastt_mlp</code></td>
+</tr>
+<tr>
+<td><code>FASTTAlternating</code></td>
+<td><strong>GPU</strong> (MPS/CUDA)</td>
+<td><code>s2t_fs.models.fastt.fastt_alternating</code></td>
+</tr>
+<tr>
+<td><code>AdaSTTXGBoost</code></td>
+<td><strong>CPU only</strong></td>
+<td><code>s2t_fs.models.adastt_xgboost</code></td>
+</tr>
+<tr>
+<td><code>AdaSTTLightGBM</code></td>
+<td><strong>CPU only</strong></td>
+<td><code>s2t_fs.models.adastt_lightgbm</code></td>
+</tr>
+<tr>
+<td><code>DummyModel</code></td>
+<td><strong>CPU only</strong></td>
+<td><code>s2t_fs.models.dummy_model</code></td>
+</tr>
+<tr>
+<td><code>RandomModel</code></td>
+<td><strong>CPU only</strong></td>
+<td><code>s2t_fs.models.random_ensemble</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="resource-utilization-in-sequential-mode">Resource Utilization in Sequential Mode</h3>
+<p>When both <code>trial_parallel</code> and <code>model_parallel</code> are <code>false</code> (default), each
+model at each trial gets <strong>full exclusive access</strong> to all hardware:</p>
+<ul>
+<li><strong>XGBoost</strong>: <code>nthread = os.cpu_count()</code> (all CPU cores)</li>
+<li><strong>LightGBM</strong>: <code>num_threads = os.cpu_count()</code> (all CPU cores)</li>
+<li><strong>GPU models</strong>: sole process using MPS/CUDA (no memory contention)</li>
+</ul>
+<h3 id="gpu-safety-guard">GPU Safety Guard</h3>
+<p>When <code>model_parallel: true</code>, the orchestrator checks model <code>class_path</code> values
+(including nested Pipeline steps) against the known set of GPU classes. If any
+GPU model is found:</p>
+<ul>
+<li>A warning is logged explaining why parallel execution is unsafe</li>
+<li>Execution automatically falls back to sequential</li>
+</ul>
+<p>This prevents:</p>
+<ul>
+<li><strong>MPS deadlocks</strong>: Apple Metal cannot be shared across processes</li>
+<li><strong>CUDA fork corruption</strong>: <code>fork()</code> duplicates CUDA context, causing silent
+  corruption on Linux (the <code>spawn</code> context is used regardless, but GPU memory
+  contention remains a risk)</li>
+<li><strong>OOM errors</strong>: Multiple models competing for limited GPU memory</li>
+</ul>
+<hr />
+<h2 id="speed-expectations-by-hardware">Speed Expectations by Hardware</h2>
+<h3 id="apple-silicon-mps">Apple Silicon (MPS)</h3>
+<ul>
+<li>GPU models run on Metal Performance Shaders — functional but 3-7x slower
+  than equivalent CUDA hardware for typical PyTorch training loops</li>
+<li><code>FASTTAlternating</code> is CPU-bound regardless (no GPU acceleration in its
+  current implementation)</li>
+<li>XGBoost / LightGBM use all CPU cores natively</li>
+</ul>
+<h3 id="nvidia-gpu-cuda">NVIDIA GPU (CUDA)</h3>
+<ul>
+<li><code>FASTTBoosted</code>: expect <strong>3-7x speedup</strong> vs MPS (~15 min &rarr; ~2-5 min)</li>
+<li><code>BoostedSDTR</code> / <code>AdaSTTMLP</code>: modest speedup (already fast)</li>
+<li><code>FASTTAlternating</code>: <strong>significant speedup</strong> for transform and surrogate gradient
+  steps (GPU-accelerated); base selector (XGBoost) remains CPU-bound</li>
+<li>XGBoost / LightGBM: no change (CPU-only)</li>
+</ul>
+<h3 id="cpu-only">CPU-Only</h3>
+<ul>
+<li>All models fall back to CPU automatically</li>
+<li>GPU models train on CPU (slower but functional)</li>
+<li>No special configuration needed</li>
+</ul>
+<hr />
+<h2 id="future-optimizations">Future Optimizations</h2>
+<h3 id="fasttalternating-architecture-note">FASTTAlternating Architecture Note</h3>
+<p><code>FASTTAlternating</code> uses GPU acceleration for its torch components (feature
+transform, linear surrogate, gradient updates) while the base selector
+(e.g., XGBoost) remains CPU-bound. Each alternating iteration involves:</p>
+<ol>
+<li><strong>GPU</strong>: Transform features via <code>Tθ(z)</code> on device</li>
+<li><strong>CPU</strong>: Transfer to numpy, fit base selector (XGBoost)</li>
+<li><strong>GPU</strong>: Fit surrogate and update transform via backpropagation</li>
+</ol>
+<p>The CPU-GPU data transfer per iteration is minimal (feature matrices), and the
+GPU acceleration of the gradient-heavy surrogate fitting and transform update
+steps provides meaningful speedup on CUDA.</p>
+<h3 id="hybrid-parallel-execution">Hybrid Parallel Execution</h3>
+<p>A more advanced strategy would partition models into GPU and CPU-only groups,
+run GPU models sequentially (sole GPU access), then run CPU models in parallel
+via process pool. The current architecture supports adding this behind a
+<code>"model_parallel": "auto"</code> mode if the marginal time savings (~5 min in typical
+configs) justify the added complexity.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
