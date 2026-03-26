@@ -14,6 +14,8 @@
         <link rel="prev" href="../experiment_orchestration/">
       
       
+        <link rel="next" href="../experiment-tracking/">
+      
       
         
       
@@ -23,7 +25,7 @@
     
     
       
-        <title>Transforms Rationale - S2T-FS</title>
+        <title>Transform Experiments Rationale - S2T-FS</title>
       
     
     
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#rationale-regarding-alternate-datasets-for-non-diagonal-transform-experiments" class="md-skip">
+        <a href="#transform-experiments-rationale" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Transforms Rationale
+              Transform Experiments Rationale
             
           </span>
         </div>
@@ -310,14 +312,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../experiments/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Experimental Design
+    Architecture
   
 
     
@@ -332,6 +334,123 @@
     
       
       
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experimental Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Experimental Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experiments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & 3-Tier Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -356,9 +475,10 @@
     </li>
   
 
-    
-      
-      
+              
+            
+              
+                
   
   
     
@@ -373,6 +493,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transform Experiments Rationale
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -380,7 +518,7 @@
   <span class="md-ellipsis">
     
   
-    Transforms Rationale
+    Transform Experiments Rationale
   
 
     
@@ -390,6 +528,181 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-synthetic-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Synthetic Validation?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rationale-for-non-diagonal-dataset-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale for Non-Diagonal Dataset Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rationale for Non-Diagonal Dataset Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-linear-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 — Linear Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-low-rank-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 — Low-Rank Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-nonlinear-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 — Nonlinear Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-diagonal-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 — Diagonal Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-correct-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What "Correct" Looks Like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibility Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experiment-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experiment Tracking (MLflow)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote-execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Execution (Vast.ai)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -414,6 +727,108 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-synthetic-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Synthetic Validation?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rationale-for-non-diagonal-dataset-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale for Non-Diagonal Dataset Variants
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rationale for Non-Diagonal Dataset Variants">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-linear-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 — Linear Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-low-rank-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 — Low-Rank Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-nonlinear-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 — Nonlinear Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-diagonal-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 — Diagonal Transform
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-correct-looks-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What "Correct" Looks Like
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibility-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibility Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -432,18 +847,81 @@
   
 
 
-<h1 id="rationale-regarding-alternate-datasets-for-non-diagonal-transform-experiments">Rationale regarding Alternate Datasets for Non-Diagonal Transform Experiments</h1>
-<p>When exploring and verifying the <code>FASTT</code> framework, specifically when transitioning our test suite from <code>diagonal</code> transforms to matrix-based projection transforms (<code>linear</code>, <code>low_rank</code>, and <code>nonlinear</code>), it is important to test against variations in dataset complexities.</p>
-<p><strong>1. Linear Transform (<code>Configs: synt-exp_fastt-alternating-linear</code>)</strong>
-- Data Configuration Shift: <code>n_samples=4500</code>, <code>n_informative=6</code>, <code>n_noise=30</code>
-- <strong>Reasoning:</strong> A dense linear projection effectively mixes all feature dimensions. Providing slightly more informative features amidst a larger set of noise allows us to verify if the matrix factorization correctly isolates important vectors compared to scalar elements.</p>
-<p><strong>2. Low Rank Transform (<code>Configs: synt-exp_fastt-boosted-lowrank</code>)</strong>
-- Data Configuration Shift: <code>n_samples=5000</code>, <code>n_noise=45</code>, <code>n_experts=4</code>
-- <strong>Reasoning:</strong> A <code>low_rank</code> transformation enforces an informational bottleneck. Introducing highly excessive noise and more redundant experts tests whether the model acts efficiently as a strong global feature reduction system while keeping the parameter footprint smaller than full linear layers.</p>
-<p><strong>3. Nonlinear Transform (<code>Configs: synt-exp_fastt-alternating-nonlinear</code>)</strong>
-- Data Configuration Shift: <code>n_samples=3000</code>, <code>n_noise=10</code>
-- <strong>Reasoning:</strong> The <code>nonlinear</code> matrix transform builds complex interrelations via <code>GELU</code> activations. While it's powerful, we keep the dataset simpler to ensure convergence behaviors inside the surrogate training pipeline (<code>Alternating</code>) can map complex activation outputs without suffering from optimization vanishing/exploding bounds.</p>
-<p>All output models successfully derive global importance using $L_2$ column approximations from their input weights, ensuring compatibility.</p>
+<h1 id="transform-experiments-rationale">Transform Experiments Rationale</h1>
+<p>This page explains the design choices behind the synthetic validation suite for FASTT's four
+transform types, and why each experiment uses a slightly different dataset configuration.</p>
+<hr />
+<h2 id="why-synthetic-validation">Why Synthetic Validation?</h2>
+<p>Before running the full benchmark on real speech datasets, we validate each transform variant
+in isolation using synthetic data. Synthetic experiments let us control the ground-truth
+structure of the feature space — the number of informative features, noise features, and
+target experts — and verify that the transform correctly identifies and exploits that
+structure.</p>
+<p>The 16-model matrix (<code>configs/16_exp/</code>) covers all combinations of:</p>
+<ul>
+<li><strong>4 transform types</strong>: <code>diagonal</code>, <code>linear</code>, <code>low_rank</code>, <code>nonlinear</code></li>
+<li><strong>2 FASTT variants</strong>: <code>FASTTAlternating</code>, <code>FASTTBoosted</code></li>
+<li><strong>2 base selectors</strong>: <code>AdaSTTXGBoost</code> / <code>AdaSTTLightGBM</code> (for Alternating), <code>BoostedSDTR</code> / <code>AdaSTTMLP</code> (for Boosted)</li>
+</ul>
+<p>Run any individual experiment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>make<span class="w"> </span>run<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/16_exp/exp_alt_XGBoost_nonlinear.json
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>make<span class="w"> </span>run<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/16_exp/exp_boosted_MLP_low_rank.json
+</code></pre></div>
+<hr />
+<h2 id="rationale-for-non-diagonal-dataset-variants">Rationale for Non-Diagonal Dataset Variants</h2>
+<p>The diagonal transform (<code>configs/synt-exp_fastt-alternating-diagonal.json</code>) uses the default
+synthetic dataset configuration. When we move to matrix-based transforms, we deliberately
+adjust the dataset to match the structural assumptions each transform is designed to exploit.</p>
+<h3 id="1-linear-transform">1 — Linear Transform</h3>
+<p><strong>Config:</strong> <code>synt-exp_fastt-alternating-linear.json</code></p>
+<p><strong>Dataset shift:</strong> <code>n_samples=4500</code>, <code>n_informative=6</code>, <code>n_noise=30</code></p>
+<p>A dense linear projection mixes all feature dimensions simultaneously. By providing
+a larger number of informative features embedded in a sizeable noise set, we test whether the
+learned projection matrix correctly isolates the informative subspace from the noise columns.
+If the transform works correctly, the column norms of ( W ) should concentrate on the
+informative feature indices.</p>
+<h3 id="2-low-rank-transform">2 — Low-Rank Transform</h3>
+<p><strong>Config:</strong> <code>synt-exp_fastt-boosted-lowrank.json</code></p>
+<p><strong>Dataset shift:</strong> <code>n_samples=5000</code>, <code>n_noise=45</code>, <code>n_experts=4</code></p>
+<p>A low-rank factorisation ( u = W_2 \cdot \text{GELU}(W_1 z) ) enforces a strict
+informational bottleneck — the bottleneck dimension is smaller than the input dimension.
+We increase noise aggressively and add more experts to stress-test whether the bottleneck
+forces the model to discard redundant dimensions while preserving discriminative signal.
+This is the hardest configuration: the model must compress more aggressively under stronger
+noise.</p>
+<h3 id="3-nonlinear-transform">3 — Nonlinear Transform</h3>
+<p><strong>Config:</strong> <code>synt-exp_fastt-alternating-nonlinear.json</code></p>
+<p><strong>Dataset shift:</strong> <code>n_samples=3000</code>, <code>n_noise=10</code></p>
+<p>The nonlinear transform builds complex feature interactions via a two-layer GELU MLP. Because
+it has the highest capacity of the four transforms, we deliberately keep the dataset simpler
+(fewer samples, less noise). This ensures the convergence dynamics of the surrogate training
+loop (in the Alternating variant) are observable without being confounded by a hard
+optimization landscape. The goal is to verify that the GELU activations add value over the
+linear baseline, not to maximally stress-test the optimizer.</p>
+<h3 id="4-diagonal-transform">4 — Diagonal Transform</h3>
+<p><strong>Config:</strong> <code>synt-exp_fastt-alternating-diagonal.json</code></p>
+<p>The diagonal transform is the simplest: it applies a per-feature scalar gate ( u_i = q_i z_i ).
+It is expected to produce sparse solutions (via L1 regularisation) that directly identify
+the informative feature indices. This is the reference configuration and uses the default
+synthetic dataset parameters.</p>
+<hr />
+<h2 id="what-correct-looks-like">What "Correct" Looks Like</h2>
+<p>A transform experiment is considered successful if:</p>
+<ol>
+<li><strong>WER improves</strong> over the raw (untransformed) baseline with the same selector.</li>
+<li><strong>Feature importances concentrate</strong> on the informative feature indices in the synthetic
+   ground truth (verifiable because we know which features are informative).</li>
+<li><strong>Training converges</strong> without gradient explosion (monitored via the surrogate loss curve
+   in the Alternating variant).</li>
+</ol>
+<p>All three criteria are logged to MLflow as part of the experiment artifacts, including the
+feature importance plot produced by the <code>plot_feature_importances</code> callback.</p>
+<hr />
+<h2 id="compatibility-guarantee">Compatibility Guarantee</h2>
+<p>All synthetic validation configs use the same <code>class_path</code>-driven registry system as the
+real-data experiments. No internal logic is substituted. The transforms, selectors, and
+training loops are identical. This guarantees that results on synthetic data transfer
+directly to the production benchmarks.</p>
 
 
 
@@ -499,7 +977,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

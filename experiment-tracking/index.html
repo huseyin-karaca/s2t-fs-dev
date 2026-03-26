@@ -11,6 +11,10 @@
       
       
       
+        <link rel="prev" href="../synthetic_transforms_rationale/">
+      
+      
+        <link rel="next" href="../remote-execution/">
       
       
         
@@ -21,7 +25,7 @@
     
     
       
-        <title>Completed experiments - S2T-FS</title>
+        <title>Experiment Tracking (MLflow) - S2T-FS</title>
       
     
     
@@ -71,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#experiment-tracking-mlflow" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Completed experiments
+              Experiment Tracking (MLflow)
             
           </span>
         </div>
@@ -505,10 +514,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../experiment-tracking/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experiment Tracking (MLflow)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -524,6 +560,142 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-gets-logged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Logged
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Gets Logged">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifacts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-hierarchy-in-the-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run Hierarchy in the UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-mlflow-run-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mlflow run Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducibility-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reproducibility Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -572,6 +744,132 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-gets-logged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Gets Logged
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Gets Logged">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifacts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-hierarchy-in-the-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run Hierarchy in the UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-mlflow-run-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The mlflow run Workflow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reproducibility-guarantee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reproducibility Guarantee
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -591,360 +889,182 @@
   
 
 
-  <h1>Completed experiments</h1>
-
-<p>For VoxP, this worked fine: </p>
-<p>{
-    "mlflow_params": {
-        "tracking_uri": "sqlite:///s2t-fs-experiments.db",
-        "experiment_name": "Margin Optimization (VoxPopuli)"
-    },
-    "data_params": {
-        "dataset": "voxpopuli",
-        "row_subsample": 1,
-        "feature_subsample": 1,
-        "standard_normalize": true,
-        "seed": 42,
-        "test_size": 0.15
-    },
-    "search_params": {
-        "seed": 0,
-        "num_samples": 10,
-        "num_folds": 1,
-        "test_size": 0.1,
-        "refit": true,
-        "parallel": false
-    },
-    "evaluation_params": {
-        "target_model_names": [
-            "FASTT_Alternating",
-            "FASTT_Boosted"
-        ]
-    },
-    "models": {
-        "Dummy_0": {
-            "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 0
-            },
-            "hyperparameters": {}
-        },
-        "Dummy_1": {
-            "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 1
-            },
-            "hyperparameters": {}
-        },
-        "Dummy_2": {
-            "class_path": "s2t_fs.models.dummy_model.DummyModel",
-            "init_args": {
-                "target_index": 2
-            },
-            "hyperparameters": {}
-        },
-        "Random_Ensemble": {
-            "class_path": "s2t_fs.models.random_ensemble.RandomModel",
-            "init_args": {
-                "seed": 42
-            },
-            "hyperparameters": {}
-        },
-        "Raw_SDT": {
-            "class_path": "s2t_fs.models.sdtr_models.BoostedSDTR",
-            "init_args": {
-                "num_boosting_layers": 1,
-                "epochs": 15,
-                "batch_size": 1024
-            },
-            "hyperparameters": {
-                "lr": [
-                    0.0005,
-                    0.001,
-                    0.005,
-                    0.01,
-                    0.05
-                ],
-                "depth": [
-                    2,
-                    3,
-                    4,
-                    6,
-                    8,
-                    10
-                ],
-                "num_trees": [
-                    3,
-                    5,
-                    10,
-                    15,
-                    20,
-                    30
-                ],
-                "lmbda": [
-                    0.001,
-                    0.01,
-                    0.1,
-                    1.0
-                ]
-            }
-        },
-        "Raw_XGBoost": {
-            "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
-            "init_args": {
-                "random_state": 42
-            },
-            "hyperparameters": {
-                "n_estimators": [
-                    5,
-                    10,
-                    20,
-                    50,
-                    100,
-                    200
-                ],
-                "learning_rate": [
-                    0.005,
-                    0.01,
-                    0.05,
-                    0.1,
-                    0.2,
-                    0.5
-                ],
-                "max_depth": [
-                    2,
-                    3,
-                    5,
-                    7,
-                    10,
-                    15
-                ],
-                "subsample": [
-                    0.5,
-                    0.7,
-                    0.8,
-                    0.9,
-                    1.0
-                ],
-                "colsample_bytree": [
-                    0.3,
-                    0.5,
-                    0.7,
-                    0.9,
-                    1.0
-                ],
-                "min_child_weight": [
-                    1,
-                    3,
-                    5,
-                    10
-                ],
-                "reg_lambda": [
-                    0.01,
-                    0.1,
-                    1.0,
-                    10.0
-                ]
-            }
-        },
-        "SelectKBest_SDT": {
-            "class_path": "sklearn.pipeline.Pipeline",
-            "init_args": {
-                "steps": [
-                    [
-                        "selector",
-                        {
-                            "class_path": "s2t_fs.models.multi_target_selector.MultiTargetSelectKBest",
-                            "init_args": {}
-                        }
-                    ],
-                    [
-                        "model",
-                        {
-                            "class_path": "s2t_fs.models.sdtr_models.BoostedSDTR",
-                            "init_args": {
-                                "num_boosting_layers": 1,
-                                "epochs": 15,
-                                "batch_size": 1024
-                            }
-                        }
-                    ]
-                ]
-            },
-            "hyperparameters": {
-                "selector__k": [
-                    3,
-                    5,
-                    10,
-                    15,
-                    20,
-                    30
-                ],
-                "model__lr": [
-                    0.001,
-                    0.005,
-                    0.01,
-                    0.05
-                ],
-                "model__depth": [
-                    2,
-                    3,
-                    4,
-                    6,
-                    8
-                ],
-                "model__num_trees": [
-                    5,
-                    10,
-                    15,
-                    20
-                ]
-            }
-        },
-        "SelectKBest_XGBoost": {
-            "class_path": "sklearn.pipeline.Pipeline",
-            "init_args": {
-                "steps": [
-                    [
-                        "selector",
-                        {
-                            "class_path": "s2t_fs.models.multi_target_selector.MultiTargetSelectKBest",
-                            "init_args": {}
-                        }
-                    ],
-                    [
-                        "model",
-                        {
-                            "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
-                            "init_args": {
-                                "random_state": 42
-                            }
-                        }
-                    ]
-                ]
-            },
-            "hyperparameters": {
-                "selector__k": [
-                    3,
-                    5,
-                    10,
-                    15,
-                    20,
-                    30
-                ],
-                "model__n_estimators": [
-                    5,
-                    10,
-                    20,
-                    50,
-                    100
-                ],
-                "model__learning_rate": [
-                    0.01,
-                    0.05,
-                    0.1,
-                    0.2
-                ],
-                "model__max_depth": [
-                    2,
-                    3,
-                    5,
-                    7,
-                    10
-                ],
-                "model__subsample": [
-                    0.7,
-                    0.8,
-                    1.0
-                ],
-                "model__min_child_weight": [
-                    1,
-                    3,
-                    5
-                ]
-            }
-        },
-        "FASTT_Boosted": {
-            "class_path": "s2t_fs.models.fastt.fastt_boosted.FASTTBoosted",
-            "init_args": {
-                "transform_type": "low_rank",
-                "random_state": 42,
-                "lr": 0.0005,
-                "weight_decay": 1e-05,
-                "epochs": 60,
-                "patience": 20,
-                "batch_size": 512
-            },
-            "hyperparameters": {
-                "num_rounds": [
-                    3,
-                    5,
-                    8
-                ],
-                "num_trees": [
-                    10,
-                    15,
-                    20
-                ],
-                "depth": [
-                    3,
-                    4,
-                    6
-                ],
-                "lr": [
-                    0.0001,
-                    0.0005,
-                    0.001
-                ]
-            }
-        },
-        "FASTT_Alternating": {
-            "class_path": "s2t_fs.models.fastt.fastt_alternating.FASTTAlternating",
-            "init_args": {
-                "transform_type": "nonlinear",
-                "transform_steps": 200,
-                "transform_weight_decay": 0.01,
-                "transform_lambda1": 0.01,
-                "transform_lambda2": 0.01,
-                "random_state": 42,
-                "base_selector": {
-                    "class_path": "s2t_fs.models.adastt_xgboost.AdaSTTXGBoost",
-                    "init_args": {
-                        "n_estimators": 20,
-                        "learning_rate": 0.05,
-                        "max_depth": 10,
-                        "subsample": 1.0,
-                        "colsample_bytree": 0.6,
-                        "min_child_weight": 4,
-                        "reg_lambda": 5.0
-                    }
-                }
-            },
-            "hyperparameters": {
-                "num_iterations": [
-                    5,
-                    8,
-                    10
-                ],
-                "transform_lr": [
-                    0.001,
-                    0.005,
-                    0.01
-                ],
-                "transform_steps": [
-                    100,
-                    150,
-                    200
-                ],
-                "base_selector__max_depth": [
-                    5,
-                    7,
-                    10
-                ]
-            }
-        }
-    }
-}</p>
+<h1 id="experiment-tracking-mlflow">Experiment Tracking (MLflow)</h1>
+<p>All S2T-FS experiments are tracked with <strong>MLflow</strong>, using a local SQLite database as the
+backend store. This page explains the setup, what is logged, and how to inspect results.</p>
+<hr />
+<h2 id="setup">Setup</h2>
+<p>Experiments are logged <strong>locally</strong> to <code>s2t-fs-experiments.db</code> in the project root.
+No MLflow server is required. No environment variables need to be set — the tracking URI is
+read from the config:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&quot;mlflow_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;tracking_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;experiment_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Comparison (VoxPopuli)&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Activate the Conda environment before any MLflow interaction</p>
+<p>Always run <code>conda activate s2t-fs</code> before starting an experiment or launching the
+MLflow UI. Running MLflow outside this environment will cause severe version mismatch
+errors between MLflow, scikit-learn, and Optuna — these errors can be silent or
+produce misleading messages.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>conda<span class="w"> </span>activate<span class="w"> </span>s2t-fs
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mlflow<span class="w"> </span>ui<span class="w"> </span>--backend-store-uri<span class="w"> </span>sqlite:///s2t-fs-experiments.db
+</code></pre></div>
+</div>
+<hr />
+<h2 id="viewing-results">Viewing Results</h2>
+<p>After running any experiment, launch the MLflow UI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mlflow<span class="w"> </span>ui<span class="w"> </span>--backend-store-uri<span class="w"> </span>sqlite:///s2t-fs-experiments.db
+</code></pre></div>
+<p>Then open <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a> in your browser.</p>
+<p>If you are working on a remote machine (e.g., a Vast.ai instance), download the database
+file first and then run the UI locally:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># On your local machine:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>scp<span class="w"> </span>-P<span class="w"> </span>&lt;port&gt;<span class="w"> </span>root@&lt;host&gt;:/workspace/s2t-fs/s2t-fs-experiments.db<span class="w"> </span>.
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>mlflow<span class="w"> </span>ui<span class="w"> </span>--backend-store-uri<span class="w"> </span>sqlite:///s2t-fs-experiments.db
+</code></pre></div>
+<hr />
+<h2 id="what-gets-logged">What Gets Logged</h2>
+<p>Every run — at every tier — automatically records the following.</p>
+<h3 id="parameters">Parameters</h3>
+<p>All config keys are flattened (e.g., <code>data_params.dataset</code>, <code>search_params.num_samples</code>) and
+logged as MLflow parameters via <code>log_experiment_metadata()</code>. The full config JSON is also
+uploaded as an artifact so every run is 100% reproducible from its logged state alone.</p>
+<h3 id="metrics">Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cv_mean_train_wer</code></td>
+<td>Mean cross-validation WER on the training folds</td>
+</tr>
+<tr>
+<td><code>cv_mean_test_wer</code></td>
+<td>Mean cross-validation WER on the validation fold</td>
+</tr>
+<tr>
+<td><code>custom_test_wer</code></td>
+<td>WER of the best estimator on the held-out test set</td>
+</tr>
+<tr>
+<td><code>our_best_wer</code></td>
+<td>Best WER among the target model(s) (Tier 2 / 3 parent runs)</td>
+</tr>
+<tr>
+<td><code>best_competitor_wer</code></td>
+<td>Best WER among all competitor models (Tier 2 / 3 parent runs)</td>
+</tr>
+<tr>
+<td><code>wer_margin</code></td>
+<td><code>best_competitor_wer − our_best_wer</code> (positive = we win)</td>
+</tr>
+<tr>
+<td><code>best_margin</code></td>
+<td>Best margin found across all Optuna trials (Tier 3 parent run only)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="artifacts">Artifacts</h3>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;config_name&gt;.json</code></td>
+<td>The exact config file used for this run</td>
+</tr>
+<tr>
+<td><code>s2t_fs/</code></td>
+<td>A snapshot of the entire <code>s2t_fs/</code> source directory</td>
+</tr>
+<tr>
+<td><code>results/results.json</code></td>
+<td>CV and test metrics as a structured JSON file</td>
+</tr>
+<tr>
+<td><code>study_summary.json</code></td>
+<td>Full Optuna trial history (Tier 3 runs only)</td>
+</tr>
+<tr>
+<td><code>margin_summary.json</code></td>
+<td>Per-model WER results and margin details (Tier 2 / 3 parent runs)</td>
+</tr>
+<tr>
+<td>Feature importance plots</td>
+<td>Logged by the <code>plot_feature_importances</code> callback (when configured)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tags">Tags</h3>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlflow.source.git.commit</code></td>
+<td>Git commit hash at experiment time</td>
+</tr>
+<tr>
+<td><code>mlflow.parentRunId</code></td>
+<td>Set on all child runs to enable nested run navigation in the UI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="run-hierarchy-in-the-ui">Run Hierarchy in the UI</h2>
+<p>The MLflow UI displays nested runs. Navigate to any parent run and expand it to see its
+children:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Tier 3: Margin_Optimization_Study
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  └── Trial_0_Comparison
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        ├── Model_Tuning_Dummy_0
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ├── Model_Tuning_Raw_XGBoost
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        ├── Model_Tuning_FASTT_Boosted
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        └── Model_Tuning_FASTT_Alternating
+</code></pre></div>
+<p>Each child run contains the full HPT trace for that model including all Optuna trial results.</p>
+<hr />
+<h2 id="the-mlflow-run-workflow">The <code>mlflow run</code> Workflow</h2>
+<p>Using <code>mlflow run .</code> adds a layer of MLflow orchestration that changes how the tracking URI
+is resolved. Read this carefully before using <code>mlflow run</code>.</p>
+<p>When you run <code>python -m s2t_fs.experiment --config ...</code>, the script reads the <code>tracking_uri</code>
+from the JSON config and sets it directly. This always works.</p>
+<p>When you run <code>mlflow run .</code>, the MLflow CLI <strong>creates the parent run before your script
+starts</strong>, using whatever tracking URI is active in the shell environment. Your script detects
+the pre-existing active run (<code>MLFLOW_RUN_ID</code> environment variable) and intentionally skips
+overriding the tracking URI to avoid breaking the active run context.</p>
+<p><strong>Consequence:</strong> if you do not export <code>MLFLOW_TRACKING_URI</code> before calling <code>mlflow run</code>,
+your results will be written to <code>./mlruns</code> (the default), not to <code>s2t-fs-experiments.db</code>.</p>
+<p><strong>The correct pattern:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="w"> </span>mlflow<span class="w"> </span>run<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span>-e<span class="w"> </span>model_comparison<span class="w"> </span>--env-manager<span class="o">=</span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>-P<span class="w"> </span><span class="nv">config</span><span class="o">=</span>configs/model_comparison_voxpopuli.json<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>--experiment-name<span class="w"> </span><span class="s2">&quot;Model Comparison (VoxPopuli)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="reproducibility-guarantee">Reproducibility Guarantee</h2>
+<p>Because every run logs its full config, source snapshot, and git commit hash, any completed
+run can be reproduced exactly:</p>
+<ol>
+<li>Check out the commit hash stored in <code>mlflow.source.git.commit</code>.</li>
+<li>Download the config artifact from the run.</li>
+<li>Run: <code>make run CONFIG=&lt;downloaded_config.json&gt;</code></li>
+</ol>
+<p>The logged source snapshot also serves as a backup if the repository has changed since the
+run was executed.</p>
 
 
 

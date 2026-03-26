@@ -7,12 +7,10 @@ site_dir: ../site
 theme:
   name: material
   palette:
-    # Palette toggle for light mode
     - scheme: default
       toggle:
-        icon: material/brightness-7 
+        icon: material/brightness-7
         name: Switch to dark mode
-    # Palette toggle for dark mode
     - scheme: slate
       toggle:
         icon: material/brightness-4
@@ -21,13 +19,19 @@ theme:
     - navigation.indexes
     - navigation.sections
     - navigation.top
+    - content.code.copy
 
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
-  - Experimental Design: experiments.md
-  - Orchestration & Parallelism: experiment_orchestration.md
-  - Transforms Rationale: synthetic_transforms_rationale.md
+  - Architecture: architecture.md
+  - Model Catalog: models.md
+  - Experimental Design:
+      - Overview & 3-Tier Hierarchy: experiments.md
+      - Orchestration & Parallelism: experiment_orchestration.md
+      - Transform Experiments Rationale: synthetic_transforms_rationale.md
+  - Experiment Tracking (MLflow): experiment-tracking.md
+  - Remote Execution (Vast.ai): remote-execution.md
 
 plugins:
   - search
