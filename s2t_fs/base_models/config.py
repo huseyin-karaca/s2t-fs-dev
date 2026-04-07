@@ -5,6 +5,33 @@ from transformers import WhisperForConditionalGeneration, WhisperProcessor
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor, HubertForCTC, Data2VecAudioForCTC
 
 @dataclass
+class NemoModelConfig:
+    alias: str
+    model_id: str
+    model_type: str = "nemo"
+
+    def load(self, device: str, cache_dir: str = "models"):
+        from nemo.collections.asr.models import ASRModel
+        model = ASRModel.from_pretrained(self.model_id)
+        model = model.to(device)
+        model.eval()
+        return model, None
+
+    def predict(self, model, processor, audio_array, sr, device):
+        import tempfile, os, soundfile as sf
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+            tmp_path = f.name
+            sf.write(tmp_path, audio_array, sr)
+        try:
+            transcriptions = model.transcribe([tmp_path])
+            t = transcriptions[0]
+            transcription = t if isinstance(t, str) else t.text
+        finally:
+            os.unlink(tmp_path)
+        return {"embedding": None, "transcription": transcription}
+
+
+@dataclass
 class BaseModelConfig:
     alias: str
     model_id: str
@@ -84,4 +111,30 @@ WHISPER_BASE = BaseModelConfig(
     model_type="whisper" # <--- Kritik fark
 )
 
-ACTIVE_MODELS = [WAV2VEC2_BASE, HUBERT_LARGE, DATA2VEC_BASE, WHISPER_BASE]
+WHISPER_LARGE_V3 = BaseModelConfig(
+    alias="whisper-large-v3",
+    model_id="openai/whisper-large-v3",
+    model_class=WhisperForConditionalGeneration,
+    processor_class=WhisperProcessor,
+    model_type="whisper",
+)
+
+PARAKEET_TDT = NemoModelConfig(
+    alias="parakeet-tdt",
+    model_id="nvidia/parakeet-tdt-0.6b-v2",
+)
+
+CANARY_QWEN = NemoModelConfig(
+    alias="canary-qwen",
+    model_id="nvidia/canary-qwen-2.5b",
+)
+
+ACTIVE_MODELS = [
+    WAV2VEC2_BASE,
+    HUBERT_LARGE,
+    DATA2VEC_BASE,
+    WHISPER_BASE,
+    WHISPER_LARGE_V3,
+    PARAKEET_TDT,
+    CANARY_QWEN,
+]

@@ -1,0 +1,3 @@
+alias: hubert
+module: s2t_fs.base_models.config
+var: HUBERT_LARGE

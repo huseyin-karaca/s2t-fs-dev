@@ -1,0 +1,3 @@
+alias: canary-qwen
+module: s2t_fs.base_models.config
+var: CANARY_QWEN

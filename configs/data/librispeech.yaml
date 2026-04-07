@@ -1,4 +1,17 @@
 dataset: librispeech
+
+source:
+  name: openslr/librispeech_asr
+  subset: other
+  split_name: test
+  revision: refs/convert/parquet
+  text_column: text
+  sampling_rate: 16000
+
+paths:
+  raw_dir: data/raw
+  interim_dir: data/interim/${data.dataset}/${data.source.subset}_${data.source.split_name}
+
 row_subsample: 1
 feature_subsample: 1
 standard_normalize: true

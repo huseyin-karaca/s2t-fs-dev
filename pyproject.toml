@@ -38,6 +38,8 @@ dependencies = [
     "jiwer>=4.0.0",
     "evaluate>=0.4.6",
     "hydra-core>=1.3",
+    "nemo>=7.4.1",
+    "nemo-toolkit[asr]>=2.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]

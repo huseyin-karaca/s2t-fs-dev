@@ -1,0 +1,25 @@
+# Entry-point config for raw data fetching and base-model feature generation.
+#
+# Examples:
+#   python -m s2t_fs.data.get_raw data=ami
+#   python -m s2t_fs.data.get_raw -m data=ami,librispeech,voxpopuli
+#   python -m s2t_fs.data.generate_features data=ami base_model=w2v2
+#   python -m s2t_fs.data.generate_features -m data=ami,librispeech base_model=w2v2,hubert
+
+defaults:
+  - data: ami
+  - base_model: w2v2
+  - _self_
+
+device: cuda          # cpu | cuda (falls back to cpu if cuda unavailable)
+batch_size: 1
+overwrite: false
+
+hydra:
+  run:
+    dir: outputs/preprocess/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: outputs/preprocess/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: false

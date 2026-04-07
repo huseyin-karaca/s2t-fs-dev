@@ -1,0 +1,3 @@
+alias: w2v2
+module: s2t_fs.base_models.config
+var: WAV2VEC2_BASE

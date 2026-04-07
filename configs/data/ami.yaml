@@ -1,4 +1,19 @@
 dataset: ami
+
+# --- raw loading (used by get_raw.py / generate_features.py) ---
+source:
+  name: edinburghcstr/ami
+  subset: ihm
+  split_name: test
+  revision: refs/convert/parquet
+  text_column: text
+  sampling_rate: 16000
+
+paths:
+  raw_dir: data/raw
+  interim_dir: data/interim/${data.dataset}/${data.source.subset}_${data.source.split_name}
+
+# --- downstream modeling ---
 row_subsample: 0.75
 feature_subsample: 1
 standard_normalize: true
