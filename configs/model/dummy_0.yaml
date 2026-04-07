@@ -1,0 +1,4 @@
+class_path: s2t_fs.models.dummy_model.DummyModel
+init_args:
+  target_index: 0
+hyperparameters: {}

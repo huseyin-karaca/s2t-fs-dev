@@ -1,0 +1,9 @@
+defaults:
+  - /model@models.Dummy_0: dummy_0
+  - /model@models.Dummy_1: dummy_1
+  - /model@models.Dummy_2: dummy_2
+  - /model@models.Random_Ensemble: random_ensemble
+  - /model@models.Raw_SDT: raw_sdt
+  - /model@models.Raw_XGBoost: raw_xgboost
+  - /model@models.SelectKBest_SDT: selectkbest_sdt
+  - /model@models.SelectKBest_XGBoost: selectkbest_xgboost

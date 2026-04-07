@@ -1,0 +1,10 @@
+class_path: s2t_fs.models.sdtr_models.BoostedSDTR
+init_args:
+  num_boosting_layers: 1
+  epochs: 15
+  batch_size: 1024
+hyperparameters:
+  lr: [0.0005, 0.001, 0.005, 0.01, 0.05]
+  depth: [2, 3, 4, 6, 8, 10]
+  num_trees: [3, 5, 10, 15, 20, 30]
+  lmbda: [0.001, 0.01, 0.1, 1.0]

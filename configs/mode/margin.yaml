@@ -1,0 +1,9 @@
+# @package _global_
+mode:
+  name: margin
+
+# Margin mode drives an Optuna study over list-valued data_params / search_params.
+# Any list-valued override in `data:` or `search:` becomes a categorical search axis.
+optimization_params:
+  n_trials: 10
+  seed: 42

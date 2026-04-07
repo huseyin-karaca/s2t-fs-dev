@@ -1,0 +1,6 @@
+# @package _global_
+defaults:
+  - override /mode: multi
+  - override /data: voxpopuli
+  - override /model_group: full_benchmark
+  - _self_

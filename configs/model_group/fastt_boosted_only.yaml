@@ -1,0 +1,2 @@
+defaults:
+  - /model@models.FASTT_Boosted: fastt_boosted

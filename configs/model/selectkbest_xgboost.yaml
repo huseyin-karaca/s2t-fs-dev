@@ -1,0 +1,17 @@
+class_path: sklearn.pipeline.Pipeline
+init_args:
+  steps:
+    - - selector
+      - class_path: s2t_fs.models.multi_target_selector.MultiTargetSelectKBest
+        init_args: {}
+    - - model
+      - class_path: s2t_fs.models.adastt_xgboost.AdaSTTXGBoost
+        init_args:
+          random_state: 42
+hyperparameters:
+  selector__k: [3, 5, 10, 15, 20, 30]
+  model__n_estimators: [5, 10, 20, 50, 100]
+  model__learning_rate: [0.01, 0.05, 0.1, 0.2]
+  model__max_depth: [2, 3, 5, 7, 10]
+  model__subsample: [0.7, 0.8, 1.0]
+  model__min_child_weight: [1, 3, 5]

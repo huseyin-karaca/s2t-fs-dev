@@ -1,0 +1,14 @@
+class_path: s2t_fs.models.fastt.fastt_boosted.FASTTBoosted
+init_args:
+  transform_type: low_rank
+  random_state: 42
+  lr: 0.0005
+  weight_decay: 1.0e-05
+  epochs: 60
+  patience: 20
+  batch_size: 512
+hyperparameters:
+  num_rounds: [3, 5, 8]
+  num_trees: [10, 15, 20]
+  depth: [3, 4, 6]
+  lr: [0.0001, 0.0005, 0.001]

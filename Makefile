@@ -4,10 +4,12 @@
 
 PROJECT_NAME = s2t-fs
 PYTHON_VERSION = 3.10
-PYTHON_INTERPRETER = python
+PYTHON_INTERPRETER = uv run python
 
-# Default config (override with: make run-single CONFIG=configs/my_config.json)
-CONFIG ?= configs/model_comparison_voxpopuli.json
+# Hydra overrides. Pass any hydra CLI args via OVERRIDES, e.g.:
+#   make run OVERRIDES="data=voxpopuli mode=multi model_group=full_benchmark"
+#   make run OVERRIDES="+experiment=ami_margin_v1"
+OVERRIDES ?=
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -17,7 +19,7 @@ CONFIG ?= configs/model_comparison_voxpopuli.json
 ## Install Python dependencies
 .PHONY: requirements
 requirements:
-	conda env update --name $(PROJECT_NAME) --file environment.yml --prune
+	uv sync
 
 
 ## Delete all compiled Python files
@@ -52,33 +54,34 @@ download_processed_data:
 ## Set up Python interpreter environment
 .PHONY: create_environment
 create_environment:
-	conda env create --name $(PROJECT_NAME) -f environment.yml
-	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
+	uv venv --python $(PYTHON_VERSION)
+	uv sync
+	@echo ">>> venv created. Activate with:\nsource .venv/bin/activate"
 
 
 #################################################################################
 # EXPERIMENT COMMANDS                                                           #
 #################################################################################
 
-## Run single-model hyperparameter tuning  (e.g. make run-single CONFIG=configs/try_to_improve_our_models_voxpopuli.json)
+## Run single-model HPT              (e.g. make run-single OVERRIDES="data=ami model_group=fastt_boosted_only")
 .PHONY: run-single
 run-single:
-	$(PYTHON_INTERPRETER) -m s2t_fs.experiment --config $(CONFIG) --mode single
+	$(PYTHON_INTERPRETER) -m s2t_fs.experiment mode=single $(OVERRIDES)
 
-## Run multi-model comparison benchmark   (e.g. make run-comparison CONFIG=configs/model_comparison_voxpopuli.json)
+## Run multi-model comparison        (e.g. make run-comparison OVERRIDES="data=ami")
 .PHONY: run-comparison
 run-comparison:
-	$(PYTHON_INTERPRETER) -m s2t_fs.experiment --config $(CONFIG) --mode multi
+	$(PYTHON_INTERPRETER) -m s2t_fs.experiment mode=multi $(OVERRIDES)
 
-## Run margin optimization study           (e.g. make run-margin CONFIG=configs/margin_optimization_voxpopuli.json)
+## Run margin optimization study     (e.g. make run-margin OVERRIDES="+experiment=ami_margin_v1")
 .PHONY: run-margin
 run-margin:
-	$(PYTHON_INTERPRETER) -m s2t_fs.experiment --config $(CONFIG) --mode margin
+	$(PYTHON_INTERPRETER) -m s2t_fs.experiment mode=margin $(OVERRIDES)
 
-## Run experiment with auto-detected mode  (e.g. make run CONFIG=configs/some_config.json)
+## Run experiment with current defaults  (compose via OVERRIDES or +experiment=<name>)
 .PHONY: run
 run:
-	$(PYTHON_INTERPRETER) -m s2t_fs.experiment --config $(CONFIG)
+	$(PYTHON_INTERPRETER) -m s2t_fs.experiment $(OVERRIDES)
 
 
 #################################################################################

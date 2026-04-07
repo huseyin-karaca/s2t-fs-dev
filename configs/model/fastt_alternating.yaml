@@ -1,0 +1,23 @@
+class_path: s2t_fs.models.fastt.fastt_alternating.FASTTAlternating
+init_args:
+  transform_type: nonlinear
+  transform_steps: 200
+  transform_weight_decay: 0.01
+  transform_lambda1: 0.01
+  transform_lambda2: 0.01
+  random_state: 42
+  base_selector:
+    class_path: s2t_fs.models.adastt_xgboost.AdaSTTXGBoost
+    init_args:
+      n_estimators: 20
+      learning_rate: 0.05
+      max_depth: 10
+      subsample: 1.0
+      colsample_bytree: 0.6
+      min_child_weight: 4
+      reg_lambda: 5.0
+hyperparameters:
+  num_iterations: [5, 8, 10]
+  transform_lr: [0.001, 0.005, 0.01]
+  transform_steps: [100, 150, 200]
+  base_selector__max_depth: [5, 7, 10]

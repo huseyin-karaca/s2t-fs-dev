@@ -1,0 +1,25 @@
+# S2T-FS Hydra root config.
+#
+# Compose via defaults list. Override any group from the CLI, e.g.:
+#   python -m s2t_fs.experiment data=voxpopuli mode=single model_group=fastt_only
+#
+# Or load a named, frozen snapshot (the "second-level" config for the article):
+#   python -m s2t_fs.experiment +experiment=ami_margin_v1
+
+defaults:
+  - mode: multi
+  - data: voxpopuli
+  - search: default
+  - evaluation: fastt_targets
+  - mlflow: default
+  - model_group: full_benchmark
+  - _self_
+
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: outputs/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: false

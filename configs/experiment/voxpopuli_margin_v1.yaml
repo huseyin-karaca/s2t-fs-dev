@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - override /mode: margin
+  - override /data: voxpopuli
+  - override /model_group: full_benchmark
+  - _self_
+
+data:
+  row_subsample: [1, 0.75]
+  test_size: [0.1, 0.15]
+
+search:
+  seed: [0, 42]
+  num_samples: [10, 15]
+
+optimization_params:
+  n_trials: 7
+  seed: 42

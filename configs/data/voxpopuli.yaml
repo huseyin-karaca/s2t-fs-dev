@@ -1,0 +1,6 @@
+dataset: voxpopuli
+row_subsample: 1
+feature_subsample: 1
+standard_normalize: true
+seed: 42
+test_size: 0.15

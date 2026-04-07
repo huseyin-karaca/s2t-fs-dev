@@ -196,6 +196,13 @@ def margin_optimization_experiment(cfg, config_path=None):
             f"(trial {best.number}, params: {best.params})"
         )
 
+        return {
+            "best_margin": best.value,
+            "best_trial_number": best.number,
+            "best_params": dict(best.params),
+            "parent_run_id": parent_run_id,
+        }
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

@@ -1,0 +1,34 @@
+# @package _global_
+#
+# Frozen, reproducible snapshot: VoxPopuli full-benchmark multi-model comparison.
+# This configuration produced good results in prior records and is pinned here
+# as the canonical VoxPopuli baseline for the article.
+#
+# Run: python -m s2t_fs.experiment +experiment=voxpopuli_best
+
+defaults:
+  - override /mode: multi
+  - override /data: voxpopuli
+  - override /search: default
+  - override /evaluation: fastt_targets
+  - override /model_group: full_benchmark
+  - _self_
+
+# Scalar data/search values are pinned explicitly here (rather than inherited)
+# so that edits to the shared group files cannot silently drift this snapshot.
+data:
+  dataset: voxpopuli
+  row_subsample: 1
+  feature_subsample: 1
+  standard_normalize: true
+  seed: 42
+  test_size: 0.15
+
+search:
+  seed: 0
+  num_samples: 10
+  num_folds: 1
+  test_size: 0.1
+  refit: true
+  trial_parallel: false
+  model_parallel: false

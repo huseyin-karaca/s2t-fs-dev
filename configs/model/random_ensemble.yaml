@@ -1,0 +1,4 @@
+class_path: s2t_fs.models.random_ensemble.RandomModel
+init_args:
+  seed: 42
+hyperparameters: {}

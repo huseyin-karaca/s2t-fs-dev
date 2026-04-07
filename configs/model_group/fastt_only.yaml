@@ -1,0 +1,3 @@
+defaults:
+  - /model@models.FASTT_Boosted: fastt_boosted
+  - /model@models.FASTT_Alternating: fastt_alternating

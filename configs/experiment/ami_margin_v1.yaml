@@ -1,0 +1,28 @@
+# @package _global_
+#
+# L3 margin-optimization snapshot on AMI.
+# This is a "second-level" promoted config: when a sweep produces a good margin,
+# copy the resolved outputs/.../.hydra/config.yaml values into a file like this,
+# commit it, and the run becomes fully reproducible for the article.
+#
+# Run: python -m s2t_fs.experiment +experiment=ami_margin_v1
+
+defaults:
+  - override /mode: margin
+  - override /data: ami
+  - override /model_group: full_benchmark
+  - _self_
+
+data:
+  row_subsample: [1, 0.75]
+  test_size: [0.1, 0.15, 0.2]
+
+search:
+  seed: [0, 42]
+  num_samples: [10, 15]
+  num_folds: [1, 2]
+  test_size: [0.1, 0.15]
+
+optimization_params:
+  n_trials: 7
+  seed: 42

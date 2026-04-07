@@ -1,0 +1,17 @@
+class_path: sklearn.pipeline.Pipeline
+init_args:
+  steps:
+    - - selector
+      - class_path: s2t_fs.models.multi_target_selector.MultiTargetSelectKBest
+        init_args: {}
+    - - model
+      - class_path: s2t_fs.models.sdtr_models.BoostedSDTR
+        init_args:
+          num_boosting_layers: 1
+          epochs: 15
+          batch_size: 1024
+hyperparameters:
+  selector__k: [3, 5, 10, 15, 20, 30]
+  model__lr: [0.001, 0.005, 0.01, 0.05]
+  model__depth: [2, 3, 4, 6, 8]
+  model__num_trees: [5, 10, 15, 20]

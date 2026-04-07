@@ -1,0 +1,6 @@
+dataset: ami
+row_subsample: 0.75
+feature_subsample: 1
+standard_normalize: true
+seed: 42
+test_size: 0.1

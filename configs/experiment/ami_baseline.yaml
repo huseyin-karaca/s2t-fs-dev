@@ -1,0 +1,8 @@
+# @package _global_
+# Frozen, reproducible L2 snapshot: AMI full-benchmark multi-model comparison.
+# Run: python -m s2t_fs.experiment +experiment=ami_baseline
+defaults:
+  - override /mode: multi
+  - override /data: ami
+  - override /model_group: full_benchmark
+  - _self_

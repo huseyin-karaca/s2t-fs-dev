@@ -1,0 +1,2 @@
+tracking_uri: sqlite:///s2t-fs-experiments.db
+experiment_name: "S2T-FS (${data.dataset})"

@@ -1,0 +1,7 @@
+seed: 0
+num_samples: 10
+num_folds: 1
+test_size: 0.1
+refit: true
+trial_parallel: false
+model_parallel: false
