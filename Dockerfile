@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         rsync \
         curl \
         jq \
+        make \
+        vim \
     && rm -rf /var/lib/apt/lists/*
 
 # ── All Python packages via pip (conda solver is too slow for CI) ─────────────
@@ -24,7 +26,8 @@ RUN pip install --no-cache-dir \
         "lightgbm>=4.0" \
         "optuna>=4.3" \
         "optuna-integration>=4.3" \
-        "mlflow>=2.10" \
+        "mlflow>=3.10" \
+        "python-dateutil>=2.7" \
         python-dotenv \
         loguru \
         gdown \

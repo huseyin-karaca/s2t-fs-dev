@@ -6,11 +6,13 @@
 #   bash scripts/vast_launch.sh [OPTIONS]
 #
 # Options (all override .env defaults):
-#   --gpu       GPU model name to search for  (default: $GPU or RTX_3090)
-#   --max-price Max price in $/hr             (default: $MAX_PRICE or 0.30)
-#   --disk      Disk size in GB               (default: $DISK or 30)
-#   --branch    Git branch to clone           (default: $GIT_BRANCH or main)
-#   --dry-run   Print the offer without creating the instance
+#   --gpu        GPU model name to search for   (default: $GPU or RTX_3090)
+#   --max-price  Max price in $/hr              (default: $MAX_PRICE or 0.30)
+#   --disk       Disk size in GB                (default: $DISK or 30)
+#   --branch     Git branch to clone            (default: $GIT_BRANCH or main)
+#   --inet-down  Min download speed in Mbps     (default: $INET_DOWN or 500)
+#   --inet-up    Min upload speed in Mbps       (default: $INET_UP or 100)
+#   --dry-run    Print the offer without creating the instance
 
 set -euo pipefail
 
@@ -30,6 +32,8 @@ GPU="${GPU:-RTX_3090}"
 MAX_PRICE="${MAX_PRICE:-0.30}"
 DISK="${DISK:-30}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
+INET_DOWN="${INET_DOWN:-500}"
+INET_UP="${INET_UP:-100}"
 VAST_IMAGE="${VAST_IMAGE:-ghcr.io/${GITHUB_ACTOR}/s2t-fs:latest}"
 GIT_REPO_URL="${GIT_REPO_URL:-https://github.com/${GITHUB_ACTOR}/s2t-fs.git}"
 DRY_RUN=false
@@ -37,11 +41,13 @@ DRY_RUN=false
 # ── Parse CLI flags ───────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --gpu)       GPU="$2";       shift 2 ;;
-        --max-price) MAX_PRICE="$2"; shift 2 ;;
-        --disk)      DISK="$2";      shift 2 ;;
-        --branch)    GIT_BRANCH="$2"; shift 2 ;;
-        --dry-run)   DRY_RUN=true;   shift ;;
+        --gpu)        GPU="$2";        shift 2 ;;
+        --max-price)  MAX_PRICE="$2";  shift 2 ;;
+        --disk)       DISK="$2";       shift 2 ;;
+        --branch)     GIT_BRANCH="$2"; shift 2 ;;
+        --inet-down)  INET_DOWN="$2";  shift 2 ;;
+        --inet-up)    INET_UP="$2";    shift 2 ;;
+        --dry-run)    DRY_RUN=true;    shift ;;
         *) echo "Unknown flag: $1"; exit 1 ;;
     esac
 done
@@ -51,24 +57,25 @@ done
 : "${GITHUB_ACTOR:?Missing GITHUB_ACTOR in .env}"
 : "${GIT_REPO_URL:?Missing GIT_REPO_URL in .env}"
 
-# Register API key with the vastai CLI for this session
-vastai set api-key "${VAST_API_KEY}" &>/dev/null
+# VAST_API_KEY is already exported via `set -o allexport` above.
+# vastai reads it directly from the environment — no `vastai set api-key` needed.
 
 echo "┌─────────────────────────────────────────┐"
 echo "│          vast.ai instance launch         │"
 echo "├─────────────────────────────────────────┤"
-echo "│  GPU       : ${GPU}"
-echo "│  Max price : \$${MAX_PRICE}/hr"
-echo "│  Disk      : ${DISK} GB"
-echo "│  Image     : ${VAST_IMAGE}"
-echo "│  Branch    : ${GIT_BRANCH}"
+echo "│  GPU        : ${GPU}"
+echo "│  Max price  : \$${MAX_PRICE}/hr"
+echo "│  Disk       : ${DISK} GB"
+echo "│  Down/Up    : ${INET_DOWN}/${INET_UP} Mbps"
+echo "│  Image      : ${VAST_IMAGE}"
+echo "│  Branch     : ${GIT_BRANCH}"
 echo "└─────────────────────────────────────────┘"
 echo ""
 
 # ── Search for offers ─────────────────────────────────────────────────────────
 echo "Searching for offers..."
 OFFER_JSON=$(vastai search offers \
-    "gpu_name=${GPU} dph<${MAX_PRICE} cuda_vers>=12.1 rentable=True num_gpus=1" \
+    "gpu_name=${GPU} dph<${MAX_PRICE} cuda_vers>=12.1 rentable=True num_gpus=1 inet_down>=${INET_DOWN} inet_up>=${INET_UP}" \
     -o dph_total --raw 2>/dev/null)
 
 OFFER_COUNT=$(echo "${OFFER_JSON}" | jq 'length')
@@ -84,9 +91,11 @@ OFFER_ID=$(echo "${OFFER}" | jq -r '.id')
 OFFER_PRICE=$(echo "${OFFER}" | jq -r '.dph_total')
 OFFER_GPU=$(echo "${OFFER}" | jq -r '.gpu_name')
 OFFER_CUDA=$(echo "${OFFER}" | jq -r '.cuda_max_good')
+OFFER_DOWN=$(echo "${OFFER}" | jq -r '.inet_down // "?"')
+OFFER_UP=$(echo "${OFFER}" | jq -r '.inet_up // "?"')
 
 echo "Best match:"
-echo "  ID: ${OFFER_ID}  |  GPU: ${OFFER_GPU}  |  \$${OFFER_PRICE}/hr  |  CUDA ${OFFER_CUDA}"
+echo "  ID: ${OFFER_ID}  |  GPU: ${OFFER_GPU}  |  \$${OFFER_PRICE}/hr  |  CUDA ${OFFER_CUDA}  |  ${OFFER_DOWN}↓ / ${OFFER_UP}↑ Mbps"
 echo ""
 
 if [ "${DRY_RUN}" = "true" ]; then

@@ -1,11 +1,11 @@
 {
     "mlflow_params": {
         "tracking_uri": "sqlite:///s2t-fs-experiments.db",
-        "experiment_name": "Model Comparison (Ami)"
+        "experiment_name": "Model Comparison (Librispeech)"
     },
     "data_params": {
-        "dataset": "ami",
-        "row_subsample": 0.75,
+        "dataset": "librispeech",
+        "row_subsample": 1,
         "feature_subsample": 1,
         "standard_normalize": true,
         "seed": 42,
