@@ -1,0 +1,24 @@
+data:
+  dataset: ami
+  source:
+    name: edinburghcstr/ami
+    subset: ihm
+    split_name: test
+    revision: refs/convert/parquet
+    text_column: text
+    sampling_rate: 16000
+  paths:
+    raw_dir: data/raw
+    interim_dir: data/interim/${data.dataset}/${data.source.subset}_${data.source.split_name}
+  row_subsample: 0.75
+  feature_subsample: 1
+  standard_normalize: true
+  seed: 42
+  test_size: 0.1
+base_model:
+  alias: whisper-large-v3
+  module: s2t_fs.base_models.config
+  var: WHISPER_LARGE_V3
+device: cuda
+batch_size: 1
+overwrite: false

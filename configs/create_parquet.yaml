@@ -1,0 +1,38 @@
+# Entry-point config for flattening interim per-model features into a single
+# parquet/csv under data/processed/.
+#
+# Examples:
+#   python -m s2t_fs.data.create_parquet data=ami
+#   python -m s2t_fs.data.create_parquet data=ami mfcc=[13,20] write_csv=true
+
+defaults:
+  - data: ami
+  - _self_
+
+processed_dir: data/processed
+write_csv: false
+
+# If true: drop *_transcription columns and expand each *_embedding list column
+# into one feature per dimension (e.g. w2v2_embedding_0 ... w2v2_embedding_767).
+flattened: false
+
+# Which n_mfcc variants to include (must already exist under interim_dir/mfcc<N>)
+mfcc:
+  - 13
+
+# Base models to include — each entry mirrors a configs/base_model/*.yaml file.
+# Add/remove freely; missing interim dirs are skipped with a warning.
+base_models:
+  - { module: s2t_fs.base_models.config, var: WAV2VEC2_BASE }
+  - { module: s2t_fs.base_models.config, var: HUBERT_LARGE }
+  - { module: s2t_fs.base_models.config, var: DATA2VEC_BASE }
+  - { module: s2t_fs.base_models.config, var: WHISPER_BASE }
+  - { module: s2t_fs.base_models.config, var: WHISPER_LARGE_V3 }
+  - { module: s2t_fs.base_models.config, var: PARAKEET_TDT }
+  - { module: s2t_fs.base_models.config, var: CANARY_QWEN }
+
+hydra:
+  run:
+    dir: outputs/create_parquet/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: false
