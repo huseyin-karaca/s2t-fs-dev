@@ -1,0 +1,25 @@
+\begin{table}[t]
+    \centering
+    \caption{Test WER across datasets.}
+    \label{tab:wer_results} \small
+    \begin{tabular}{lcccc}
+        \toprule \textbf{Method}                                         & Ami             & Libri.          & CV              & VoxP.           \\
+        \midrule \multicolumn{5}{l}{\textit{Individual STT Models}}       \\
+        Whisper-large-v3                                                 & 0.3105          & 0.0485          & 0.0725          & 0.2150          \\
+        Parakeet-TDT-0.6b                                                & 0.2995          & 0.0435          & 0.0730          & 0.1985          \\
+        Canary-Qwen-2.5b                                                 & 0.2530          & 0.0412          & 0.0614          & 0.2130          \\
+        \midrule \multicolumn{5}{l}{\textit{External Baselines}}          \\
+        Random Ensemble                                                  & 0.2810          & 0.0440          & 0.0675          & 0.2090          \\
+        ROVER                                                            & 0.2910          & 0.0415          & 0.0640          & 0.1910          \\
+        \midrule \multicolumn{5}{l}{\textit{Classical Feature Selection}} \\
+        SelectKBest-SDT                                                  & 0.2710          & 0.0420          & 0.0630          & 0.1890          \\
+        SelectKBest-XGBoost                                              & 0.2690          & 0.0422          & 0.0625          & 0.1892          \\
+        Wrapper-SDT                                                      & 0.2660          & 0.0418          & 0.0618          & 0.1885          \\
+        Wrapper-XGBoost                                                  & 0.2640          & 0.0419          & 0.0616          & 0.1886          \\
+        \midrule \multicolumn{5}{l}{\textit{FASTT Framework Variants}}    \\
+        FASTT-XGBoost                                                    & 0.2507          & \textbf{0.0407} & 0.0572          & 0.1805          \\
+        FASTT-SDT                                                        & \textbf{0.2505} & 0.0413          & \textbf{0.0565} & \textbf{0.1801} \\
+        \midrule Oracle                                                  & \textit{0.1491} & \textit{0.0247} & \textit{0.0361} & \textit{0.1387} \\
+        \bottomrule
+    \end{tabular}
+\end{table}

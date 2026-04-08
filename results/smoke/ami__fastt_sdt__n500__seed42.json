@@ -1,0 +1,113 @@
+{
+  "phase": "smoke",
+  "dataset": "ami",
+  "method": "fastt_sdt",
+  "seed": 42,
+  "n_train_requested": 500,
+  "n_train_effective": 500,
+  "n_val": 8823,
+  "n_test": 8824,
+  "feature_dim": 1672,
+  "n_classes": 3,
+  "trials_budget": 2,
+  "started_at": "2026-04-08T10:28:47.624350+00:00",
+  "env": {
+    "hostname": "huseyin-mbp.local",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "python": "3.10.20",
+    "git_commit": "ba1099c",
+    "device": {
+      "torch": "2.11.0",
+      "cuda": false,
+      "cuda_device": null
+    }
+  },
+  "per_expert_wer_test": {
+    "whisper": 0.40865808725357056,
+    "parakeet": 0.32804375886917114,
+    "canary": 0.2997218072414398
+  },
+  "oracle_wer_test": 0.19613593816757202,
+  "best_single_test": {
+    "name": "canary",
+    "index": 2,
+    "wer": 0.2997210621833801
+  },
+  "best_hp_optuna": {
+    "sdt_num_trees": 50,
+    "sdt_depth": 5,
+    "sdt_lmbda": 1.0,
+    "fastt_num_rounds": 3,
+    "fastt_num_iter": 3,
+    "fastt_lr": 0.001,
+    "fastt_wd": 0.0001,
+    "mlp_lr": 0.0005,
+    "mlp_wd": 0.001,
+    "mlp_batch_size": 2048,
+    "mlp_dropout": 0.3
+  },
+  "best_hp": {
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 2048,
+    "dropout_rate": 0.3,
+    "num_trees": 50,
+    "depth": 5,
+    "lmbda": 1.0,
+    "num_rounds": 3,
+    "num_iterations": 3
+  },
+  "best_val_wer": 0.3250347077846527,
+  "test_wer": 0.2943480908870697,
+  "refit_fit_time_seconds": 61.526979041984305,
+  "refit_score_time_seconds": 0.2779053339618258,
+  "tuning_seconds": 16.389738375029992,
+  "all_trials": [
+    {
+      "number": 0,
+      "params": {
+        "sdt_num_trees": 50,
+        "sdt_depth": 3,
+        "sdt_lmbda": 0.1,
+        "fastt_num_rounds": 5,
+        "fastt_num_iter": 3,
+        "fastt_lr": 0.001,
+        "fastt_wd": 0.001,
+        "mlp_lr": 0.001,
+        "mlp_wd": 0.0001,
+        "mlp_batch_size": 1024,
+        "mlp_dropout": 0.1
+      },
+      "value": 0.3314773738384247,
+      "user_attrs": {
+        "fit_time": 7.884514499979559,
+        "score_time": 0.2936299580032937
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 1,
+      "params": {
+        "sdt_num_trees": 50,
+        "sdt_depth": 5,
+        "sdt_lmbda": 1.0,
+        "fastt_num_rounds": 3,
+        "fastt_num_iter": 3,
+        "fastt_lr": 0.001,
+        "fastt_wd": 0.0001,
+        "mlp_lr": 0.0005,
+        "mlp_wd": 0.001,
+        "mlp_batch_size": 2048,
+        "mlp_dropout": 0.3
+      },
+      "value": 0.3250347077846527,
+      "user_attrs": {
+        "fit_time": 7.8464369580033235,
+        "score_time": 0.2471604579477571
+      },
+      "state": "TrialState.COMPLETE"
+    }
+  ],
+  "wallclock_seconds": 78.26139029103797,
+  "finished_at": "2026-04-08T10:30:05.886345+00:00"
+}

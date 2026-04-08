@@ -1,0 +1,35 @@
+\begin{table}[t]
+    \centering
+    \caption{Hyperparameter search spaces. 
+    % XGBoost spaces are shared across all XGBoost-based methods (raw features, SelectKBest, Wrapper, and FASTT-XGBoost).
+    }
+    \label{tab:hp_spaces} \small
+    \begin{tabular}{@{}lll@{}}
+        \toprule \textbf{Method}                                               & \textbf{Parameter}  & \textbf{Search space}      \\
+        \midrule \multicolumn{3}{l}{\textit{Model selector hyperparameters}}    \\
+        \midrule \multirow{7}{*}{XGBoost}                                      & Num estimators      & \{100, 500, 1000\}         \\
+                                                                               & Learning rate       & \{1e-2, 2e-2, 5e-2, 1e-1\} \\
+                                                                               & Max depth           & \{4, 6, 8, 10\}            \\
+                                                                               & Subsample           & \{0.6, 0.8, 1.0\}          \\
+                                                                               & Column subsample    & \{0.5, 0.8, 1.0\}          \\
+                                                                               & Min child weight    & \{1, 4, 10\}               \\
+                                                                               & Reg lambda          & \{0.1, 1.0, 10.0\}         \\
+        \midrule \multirow{4}{*}{MLP}                                          & Learning rate       & \{1e-4, 5e-4, 1e-3\}       \\
+                                                                               & Weight decay        & \{1e-5, 1e-4, 1e-3\}       \\
+                                                                               & Batch size          & \{512, 1024, 2048\}        \\
+                                                                               & Dropout rate        & \{0.1, 0.2, 0.3\}          \\
+        \midrule \multirow{4}{*}{Soft Decision Tree}                           & Trees per layer     & \{10, 50, 100\}            \\
+                                                                               & Tree depth          & \{3, 4, 5\}                \\
+                                                                               & Lambda ($\ell_{1}$) & \{0.01, 0.1, 1.0\}         \\
+                                                                               & Temperature         & \{0.5, 1.0, 2.0\}          \\
+        \midrule \multicolumn{3}{l}{\textit{Feature selection hyperparameters}} \\
+        \midrule SelectKBest                                                   & $k$ (num. features) & \{50, 100, 200, 500\}      \\
+        \midrule Wrapper                                                       & Max features        & \{50, 100, 200\}           \\
+        % \midrule \multicolumn{3}{l}{\textit{Framework-level hyperparameters (FASTT variants)}} \\
+        \midrule \multirow{4}{*}{FASTT}                                        & Boosting rounds     & \{2, 3, 5\}                \\
+                                                                               & Learning rate       & \{1e-4, 5e-4, 1e-3\}       \\
+                                                                               & Weight decay        & \{1e-05, 1e-4, 1e-3\}      \\
+                                                                               & Iterations          & \{3, 5, 10\}               \\
+        \bottomrule
+    \end{tabular}
+\end{table}

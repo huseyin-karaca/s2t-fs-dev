@@ -1,0 +1,103 @@
+{
+  "phase": "smoke",
+  "dataset": "ami",
+  "method": "selectkbest_xgb",
+  "seed": 42,
+  "n_train_requested": 500,
+  "n_train_effective": 500,
+  "n_val": 8823,
+  "n_test": 8824,
+  "feature_dim": 1672,
+  "n_classes": 3,
+  "trials_budget": 2,
+  "started_at": "2026-04-08T10:44:42.459757+00:00",
+  "env": {
+    "hostname": "huseyin-mbp.local",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "python": "3.10.20",
+    "git_commit": "ba1099c",
+    "device": {
+      "torch": "2.11.0",
+      "cuda": false,
+      "cuda_device": null
+    }
+  },
+  "per_expert_wer_test": {
+    "whisper": 0.40865808725357056,
+    "parakeet": 0.32804375886917114,
+    "canary": 0.2997218072414398
+  },
+  "oracle_wer_test": 0.19613593816757202,
+  "best_single_test": {
+    "name": "canary",
+    "index": 2,
+    "wer": 0.2997210621833801
+  },
+  "best_hp_optuna": {
+    "xgb_n_estimators": 500,
+    "xgb_lr": 0.01,
+    "xgb_max_depth": 4,
+    "xgb_subsample": 0.6,
+    "xgb_colsample": 1.0,
+    "xgb_min_child_weight": 1,
+    "xgb_reg_lambda": 0.1,
+    "kbest_k": 200
+  },
+  "best_hp": {
+    "n_estimators": 500,
+    "learning_rate": 0.01,
+    "max_depth": 4,
+    "subsample": 0.6,
+    "colsample_bytree": 1.0,
+    "min_child_weight": 1,
+    "reg_lambda": 0.1,
+    "k": 200
+  },
+  "best_val_wer": 0.32100874185562134,
+  "test_wer": 0.28625059127807617,
+  "refit_fit_time_seconds": 3.969372207997367,
+  "refit_score_time_seconds": 0.03467575000831857,
+  "tuning_seconds": 2.2133294580271468,
+  "all_trials": [
+    {
+      "number": 0,
+      "params": {
+        "xgb_n_estimators": 500,
+        "xgb_lr": 0.01,
+        "xgb_max_depth": 4,
+        "xgb_subsample": 0.6,
+        "xgb_colsample": 1.0,
+        "xgb_min_child_weight": 1,
+        "xgb_reg_lambda": 0.1,
+        "kbest_k": 200
+      },
+      "value": 0.32100874185562134,
+      "user_attrs": {
+        "fit_time": 1.8810332080465741,
+        "score_time": 0.060342124954331666
+      },
+      "state": "TrialState.COMPLETE"
+    },
+    {
+      "number": 1,
+      "params": {
+        "xgb_n_estimators": 500,
+        "xgb_lr": 0.1,
+        "xgb_max_depth": 4,
+        "xgb_subsample": 0.6,
+        "xgb_colsample": 1.0,
+        "xgb_min_child_weight": 4,
+        "xgb_reg_lambda": 1.0,
+        "kbest_k": 50
+      },
+      "value": 0.3327133059501648,
+      "user_attrs": {
+        "fit_time": 0.1727911249618046,
+        "score_time": 0.02813520800555125
+      },
+      "state": "TrialState.COMPLETE"
+    }
+  ],
+  "wallclock_seconds": 6.390100082964636,
+  "finished_at": "2026-04-08T10:44:48.849922+00:00"
+}

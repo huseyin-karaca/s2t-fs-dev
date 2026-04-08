@@ -1,0 +1,21 @@
+\begin{table}[t]
+    \centering
+    \caption{Selector training time (seconds) across datasets. STT decoding and feature
+    extraction are performed offline and excluded from these measurements.}
+    \label{tab:cv_fit_time} \small
+    \begin{tabular}{lcccc}
+        \toprule \textbf{Method}                                         & Ami     & Libri.  & CV      & VoxP.  \\
+        \midrule \multicolumn{5}{l}{\textit{External Baselines}}          \\
+        Random Ensemble                                                  & ---     & ---     & ---     & ---     \\
+        ROVER                                                            & ---     & ---     & ---     & ---     \\
+        \midrule \multicolumn{5}{l}{\textit{Classical Feature Selection}} \\
+        SelectKBest-SDT                                                  & 2.15  & 8.40  & 5.95  & 4.10  \\
+        SelectKBest-XGBoost                                              & 0.41 & 1.15  & 0.82  & 0.65  \\
+        Wrapper-SDT                                                      & 129.0& 504.0& 357.0& 246.0\\
+        Wrapper-XGBoost                                                  & 25.1 & 58.2 & 42.15  & 36.80 \\
+        \midrule \multicolumn{5}{l}{\textit{FASTT Framework Variants}}    \\
+        FASTT-XGBoost                                                    & 1.25  & 3.10  & 2.45 & 1.95  \\
+        FASTT-SDT                                               & 10.58& 26.20& {20.15}& {16.50}\\
+        \bottomrule
+    \end{tabular}
+\end{table}

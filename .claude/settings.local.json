@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/python -c ':*)",
+      "Bash(.venv/bin/python -m s2t_fs_v2.runner --phase smoke --dataset ami --method fastt_sdt --n-train 500 --trials 2 --overwrite)",
+      "Bash(.venv/bin/python -X faulthandler -c ':*)",
+      "Bash(.venv/bin/python -m s2t_fs_v2.runner --phase smoke --dataset ami --method fastt_xgb --n-train 500 --trials 2 --overwrite)"
+    ]
+  }
+}

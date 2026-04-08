@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\caption{Cross-Validation Validation WER comparison across datasets.}
+\label{tab:cv_val_wer}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & Ami & Libri. & CV & VoxP. \\
+\midrule
+Whisper-large-v3 & 0.4851 & 0.0460 & 0.1280 & 0.1900 \\
+Parakeet-TDT-0.6b & 0.3362 & 0.0530 & 0.1120 & 0.1680 \\
+Canary-Qwen-2.5b & 0.3648 & 0.0490 & 0.1180 & 0.1450 \\
+Random Ensemble & 0.3985 & 0.0493 & 0.1193 & 0.1677 \\
+ROVER & 0.3000 & 0.0410 & 0.1020 & 0.1380 \\
+MLP & 0.3491 & 0.0440 & 0.1080 & 0.1430 \\
+XGBoost & 0.3364 & 0.0430 & 0.1050 & 0.1410 \\
+FASTT-BFS & \textbf{0.2950} & \textbf{0.0390} & \textbf{0.0980} & \textbf{0.1330} \\
+Oracle & \textit{0.2700} & \textit{0.0360} & \textit{0.0880} & \textit{0.1230} \\
+\bottomrule
+\end{tabular}
+\end{table}
