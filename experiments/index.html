@@ -1,0 +1,1491 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Hüseyin Karaca">
+      
+      
+      
+        <link rel="prev" href="../models/">
+      
+      
+        <link rel="next" href="../experiment_orchestration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Overview & 3-Tier Hierarchy - S2T-FS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#experimental-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="S2T-FS" class="md-header__button md-logo" aria-label="S2T-FS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            S2T-FS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Overview & 3-Tier Hierarchy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/huseyin-karaca/s2t-fs-dev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="S2T-FS" class="md-nav__button md-logo" aria-label="S2T-FS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    S2T-FS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/huseyin-karaca/s2t-fs-dev" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experimental Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Experimental Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & 3-Tier Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview & 3-Tier Hierarchy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-3-tier-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 3-Tier Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 3-Tier Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-single-model-hpt-make-run-single" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1 — Single-Model HPT (make run-single)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-multi-model-comparison-make-run-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2 — Multi-Model Comparison (make run-comparison)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-competitive-margin-maximization-make-run-margin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3 — Competitive Margin Maximization (make run-margin)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-schema-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config Schema Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config Schema Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlflow_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mlflow_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        data_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluation_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-configs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Configs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Configs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-model-comparison-tier-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Model Comparison (Tier 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-optimization-tier-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Margin Optimization (Tier 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-model-deep-tuning-tier-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-Model Deep Tuning (Tier 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-model-base-agnosticism-matrix-tier-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16-Model Base-Agnosticism Matrix (Tier 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mlproject-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLproject Entry Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experiment_orchestration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orchestration & Parallelism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../synthetic_transforms_rationale/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Transform Experiments Rationale
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experiment-tracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experiment Tracking (MLflow)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../remote-execution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Execution (Vast.ai)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-3-tier-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 3-Tier Hierarchy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 3-Tier Hierarchy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-single-model-hpt-make-run-single" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 1 — Single-Model HPT (make run-single)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-multi-model-comparison-make-run-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 2 — Multi-Model Comparison (make run-comparison)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-competitive-margin-maximization-make-run-margin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tier 3 — Competitive Margin Maximization (make run-margin)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-schema-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config Schema Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Config Schema Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlflow_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mlflow_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        data_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        search_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluation_params
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-configs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Configs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Configs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-model-comparison-tier-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-Model Comparison (Tier 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-optimization-tier-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Margin Optimization (Tier 3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-model-deep-tuning-tier-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-Model Deep Tuning (Tier 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-model-base-agnosticism-matrix-tier-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16-Model Base-Agnosticism Matrix (Tier 2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mlproject-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MLproject Entry Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="experimental-design">Experimental Design</h1>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>All experiments share the same execution entry point:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>s2t_fs.experiment<span class="w"> </span>--config<span class="w"> </span>configs/&lt;config&gt;.json<span class="w"> </span><span class="o">[</span>--mode<span class="w"> </span>single<span class="p">|</span>multi<span class="p">|</span>margin<span class="o">]</span>
+</code></pre></div>
+<p>Or, equivalently, via <code>make</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>run-single<span class="w">     </span><span class="nv">CONFIG</span><span class="o">=</span>configs/&lt;config&gt;.json
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>make<span class="w"> </span>run-comparison<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/&lt;config&gt;.json
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>make<span class="w"> </span>run-margin<span class="w">     </span><span class="nv">CONFIG</span><span class="o">=</span>configs/&lt;config&gt;.json
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>make<span class="w"> </span>run<span class="w">            </span><span class="nv">CONFIG</span><span class="o">=</span>configs/&lt;config&gt;.json<span class="w">   </span><span class="c1"># auto-detect mode</span>
+</code></pre></div>
+<p>When <code>--mode</code> is omitted, the mode is <strong>auto-detected</strong> from the config structure:</p>
+<ol>
+<li>Config has <code>optimization_params</code> or list-valued <code>data_params</code>/<code>search_params</code> → <code>margin</code></li>
+<li>Config has multiple entries in <code>models</code> → <code>multi</code></li>
+<li>Otherwise → <code>single</code></li>
+</ol>
+<hr />
+<h2 id="the-3-tier-hierarchy">The 3-Tier Hierarchy</h2>
+<h3 id="tier-1-single-model-hpt-make-run-single">Tier 1 — Single-Model HPT (<code>make run-single</code>)</h3>
+<p><strong>Script:</strong> <code>s2t_fs/experiment/train_single_model.py</code></p>
+<p>Runs <code>OptunaSearchCV</code> for exactly one model. This is the workhorse of the system.
+Every higher tier ultimately calls this function.</p>
+<p>What it does:</p>
+<ol>
+<li>Loads and prepares data via <code>load_and_prepare_data(data_params)</code>.</li>
+<li>Instantiates the model from its <code>class_path</code> via the model registry.</li>
+<li>Constructs an <code>OptunaSearchCV</code> object with the model's hyperparameter space.</li>
+<li>Calls <code>search.fit(X_train, Y_train)</code>.</li>
+<li>Evaluates <code>best_estimator_.predict(X_test)</code> and computes test WER.</li>
+<li>Logs everything to MLflow via <code>log_experiment_metadata()</code> and <code>log_experiment_results()</code>.</li>
+</ol>
+<p>Use this tier when you want to invest the full trial budget into one model:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>run-single<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/try_to_improve_our_models_voxpopuli.json
+</code></pre></div>
+<h3 id="tier-2-multi-model-comparison-make-run-comparison">Tier 2 — Multi-Model Comparison (<code>make run-comparison</code>)</h3>
+<p><strong>Script:</strong> <code>s2t_fs/experiment/train_multi_model.py</code></p>
+<p>Runs Tier 1 for every model defined in the config's <code>models</code> dict. Data is loaded once and
+shared across all models. The MLflow run structure is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Multi_Model_Benchmark (parent run)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ├── Model_Tuning_Dummy_0
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  ├── Model_Tuning_Raw_XGBoost
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ├── Model_Tuning_SelectKBest_SDT
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  ├── Model_Tuning_FASTT_Boosted
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  └── Model_Tuning_FASTT_Alternating
+</code></pre></div>
+<p>After all models finish, the <strong>WER margin</strong> is computed and logged to the parent run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>margin = best_competitor_wer − our_best_wer
+</code></pre></div>
+<p>A positive margin means our model(s) outperform the best competitor.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>run-comparison<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/model_comparison_voxpopuli.json
+</code></pre></div>
+<h3 id="tier-3-competitive-margin-maximization-make-run-margin">Tier 3 — Competitive Margin Maximization (<code>make run-margin</code>)</h3>
+<p><strong>Script:</strong> <code>s2t_fs/experiment/train_margin_optimization.py</code></p>
+<p><strong>The research question answered by this tier:</strong> <em>Under which experimental conditions
+(data sampling, search budget, etc.) does the gap between our models and competitors grow
+largest?</em></p>
+<p>This tier uses Optuna's <code>TPESampler</code> as an outer optimizer over the experimental setup
+itself. Parameters in <code>data_params</code> or <code>search_params</code> that are specified as JSON arrays
+(lists) become the search space. Each Optuna trial resolves one concrete set of values,
+runs a full Tier 2 comparison, and returns the WER margin as the objective value.</p>
+<p>The study maximises margin across all trials.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Margin_Optimization_Study (parent run)
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  ├── Trial_0_Comparison
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  │     ├── Model_Tuning_... (per model)
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  │     └── ...
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  ├── Trial_1_Comparison
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  │     └── ...
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  └── ...
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Why sequential outer trials?</p>
+<p>The outer Optuna study always uses <code>n_jobs=1</code>. TPE (Tree-structured Parzen Estimator)
+is a Bayesian algorithm — each new trial must see the results of all previous trials
+to make an informed suggestion. Parallelising the outer loop would destroy this feedback
+and reduce it to random search.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>run-margin<span class="w"> </span><span class="nv">CONFIG</span><span class="o">=</span>configs/margin_optimization_voxpopuli.json
+</code></pre></div>
+<hr />
+<h2 id="config-schema-reference">Config Schema Reference</h2>
+<p>Every experiment config is a JSON file with five top-level keys.</p>
+<h3 id="mlflow_params"><code>mlflow_params</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&quot;mlflow_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;tracking_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;experiment_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Model Comparison (VoxPopuli)&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tracking_uri</code></td>
+<td>SQLite database path (relative to the project root)</td>
+</tr>
+<tr>
+<td><code>experiment_name</code></td>
+<td>MLflow experiment name — creates the experiment if it does not exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data_params"><code>data_params</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">&quot;data_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;voxpopuli&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">&quot;row_subsample&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">&quot;feature_subsample&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">&quot;standard_normalize&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.15</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataset</code></td>
+<td>string</td>
+<td>One of <code>voxpopuli</code>, <code>librispeech</code>, <code>ami</code>, <code>common_voice</code>, or <code>synthetic</code></td>
+</tr>
+<tr>
+<td><code>row_subsample</code></td>
+<td>float [0,1]</td>
+<td>Fraction of rows to randomly retain</td>
+</tr>
+<tr>
+<td><code>feature_subsample</code></td>
+<td>float [0,1]</td>
+<td>Fraction of feature columns to randomly retain</td>
+</tr>
+<tr>
+<td><code>standard_normalize</code></td>
+<td>bool</td>
+<td>Apply <code>StandardScaler</code> to features</td>
+</tr>
+<tr>
+<td><code>seed</code></td>
+<td>int</td>
+<td>Random seed for subsampling and train/test split</td>
+</tr>
+<tr>
+<td><code>test_size</code></td>
+<td>float [0,1]</td>
+<td>Fraction of data held out for final evaluation</td>
+</tr>
+</tbody>
+</table>
+<p>In <strong>Tier 3 configs</strong>, any value can be a list to make it a search dimension:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">&quot;data_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;dataset&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;voxpopuli&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;librispeech&quot;</span><span class="p">],</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;row_subsample&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">],</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">&quot;standard_normalize&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.15</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="search_params"><code>search_params</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">&quot;search_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;seed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">&quot;num_samples&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">&quot;num_folds&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">&quot;refit&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="nt">&quot;trial_parallel&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">  </span><span class="nt">&quot;model_parallel&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>num_samples</code></td>
+<td>Number of Optuna HPT trials per model</td>
+</tr>
+<tr>
+<td><code>num_folds</code></td>
+<td>Number of CV splits in <code>ShuffleSplit</code></td>
+</tr>
+<tr>
+<td><code>test_size</code></td>
+<td>CV validation split size (within the training set)</td>
+</tr>
+<tr>
+<td><code>refit</code></td>
+<td>Whether <code>OptunaSearchCV</code> refits on the full training set after search</td>
+</tr>
+<tr>
+<td><code>trial_parallel</code></td>
+<td>Run Optuna trials in parallel (<code>n_jobs=-1</code>). Degrades TPE.</td>
+</tr>
+<tr>
+<td><code>model_parallel</code></td>
+<td>Run models in parallel processes. CPU-only; GPU models fall back to sequential.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="evaluation_params"><code>evaluation_params</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">&quot;evaluation_params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;target_model_names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;FASTT_Alternating&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;FASTT_Boosted&quot;</span><span class="p">]</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span>
+</code></pre></div>
+<p>Identifies which models are "ours" for margin computation. The margin is:
+<code>best_competitor_wer − min(our_model_wers)</code>.</p>
+<h3 id="models"><code>models</code></h3>
+<p>A dictionary mapping human-readable model names to their specs. Each spec has three keys:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&quot;FASTT_Alternating&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;class_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s2t_fs.models.fastt.fastt_alternating.FASTTAlternating&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">&quot;init_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">&quot;hyperparameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">&quot;num_iterations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">],</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nt">&quot;transform_lr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.001</span><span class="p">,</span><span class="w"> </span><span class="mf">0.005</span><span class="p">]</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class_path</code></td>
+<td>Fully qualified Python class path — resolved by the model registry</td>
+</tr>
+<tr>
+<td><code>init_args</code></td>
+<td>Fixed constructor arguments (not tuned). Supports nested model specs.</td>
+</tr>
+<tr>
+<td><code>hyperparameters</code></td>
+<td>Dict of <code>{param_name: [candidate_values]}</code> for OptunaSearchCV</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="available-configs">Available Configs</h2>
+<h3 id="multi-model-comparison-tier-2">Multi-Model Comparison (Tier 2)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Dataset</th>
+<th>Models</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model_comparison_voxpopuli.json</code></td>
+<td>VoxPopuli</td>
+<td>Dummy, Random, XGBoost, SDT, SelectKBest+SDT, SelectKBest+XGBoost, FASTT_Boosted, FASTT_Alternating</td>
+</tr>
+<tr>
+<td><code>model_comparison_ami.json</code></td>
+<td>AMI</td>
+<td>Same model set</td>
+</tr>
+<tr>
+<td><code>model_comparison_librispeech.json</code></td>
+<td>LibriSpeech</td>
+<td>Same model set</td>
+</tr>
+<tr>
+<td><code>model_comparison_common_voice.json</code></td>
+<td>Common Voice</td>
+<td>Same model set</td>
+</tr>
+</tbody>
+</table>
+<h3 id="margin-optimization-tier-3">Margin Optimization (Tier 3)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Dataset</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>margin_optimization_voxpopuli.json</code></td>
+<td>VoxPopuli</td>
+<td>Outer Optuna search over data/search params</td>
+</tr>
+<tr>
+<td><code>margin_optimization_ami.json</code></td>
+<td>AMI</td>
+<td>Same study on AMI</td>
+</tr>
+</tbody>
+</table>
+<h3 id="single-model-deep-tuning-tier-1">Single-Model Deep Tuning (Tier 1)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>try_to_improve_our_models_voxpopuli.json</code></td>
+<td>High-trial-budget tuning of FASTT models on VoxPopuli</td>
+</tr>
+<tr>
+<td><code>xgboost_hpt_config.json</code></td>
+<td>Deep XGBoost HPT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-model-base-agnosticism-matrix-tier-2">16-Model Base-Agnosticism Matrix (Tier 2)</h3>
+<p>All 16 files in <code>configs/16_exp/</code> run the full FASTT × transform × base-selector matrix
+on synthetic data. See <a href="../synthetic_transforms_rationale/">Transform Experiments Rationale</a>.</p>
+<hr />
+<h2 id="mlproject-entry-points">MLproject Entry Points</h2>
+<p>The <code>MLproject</code> file at the repo root exposes three named entry points for <code>mlflow run</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Multi-model comparison</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="w"> </span>mlflow<span class="w"> </span>run<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>-e<span class="w"> </span>model_comparison<span class="w"> </span>--env-manager<span class="o">=</span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span>-P<span class="w"> </span><span class="nv">config</span><span class="o">=</span>configs/model_comparison_voxpopuli.json<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span>--experiment-name<span class="w"> </span><span class="s2">&quot;Model Comparison (VoxPopuli)&quot;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># Single-model HPT</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="w"> </span>mlflow<span class="w"> </span>run<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span>-e<span class="w"> </span>single_model_hpt<span class="w"> </span>--env-manager<span class="o">=</span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span>-P<span class="w"> </span><span class="nv">config</span><span class="o">=</span>configs/try_to_improve_our_models_voxpopuli.json
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="c1"># Margin optimization</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span><span class="s2">&quot;sqlite:///s2t-fs-experiments.db&quot;</span><span class="w"> </span>mlflow<span class="w"> </span>run<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">  </span>-e<span class="w"> </span>margin_optimization<span class="w"> </span>--env-manager<span class="o">=</span><span class="nb">local</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">  </span>-P<span class="w"> </span><span class="nv">config</span><span class="o">=</span>configs/margin_optimization_voxpopuli.json
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Always export <code>MLFLOW_TRACKING_URI</code> when using <code>mlflow run</code></p>
+<p>When you invoke <code>mlflow run</code>, the MLflow CLI creates the parent run <strong>before</strong> your
+Python script starts, using its own default tracking URI. Your script's <code>tracking_uri</code>
+from the JSON config is only applied as a fallback when no active run exists.
+To direct <code>mlflow run</code> to your SQLite database, always prefix the command with
+<code>MLFLOW_TRACKING_URI="sqlite:///s2t-fs-experiments.db"</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
